@@ -1,18 +1,14 @@
-FROM nvidia/cuda:11.0.3-base-ubuntu20.04 
+# Utilisation de CentOS 7 comme base
+FROM centos:7
 
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y \
-  software-properties-common \
-  tzdata locales \
-  python3 python3-dev python3-pip python3-venv \
-  gcc make git openssh-server curl iproute2 tshark \
-  && rm -rf /var/lib/apt/lists/*
-
-#dependences pour OpenCv
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
-
+# Mise à jour du système et installation des dépendances de base
+RUN yum update -y && \
+    yum install -y epel-release && \
+    yum install -y \
+    python3 python3-devel python3-pip \
+    gcc make git openssh-server curl \
+    which \
+    && yum clean all
 
 # replace SH with BASH 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
