@@ -122,7 +122,12 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     geopandas \
     PyQt5 \
     pymysql \
-    cryptography
+    cryptography \
+    psycopg2 \
+    pg8000 \
+    asyncpg \
+    pgdb \
+    PygreSQL
     
 ##The previous lib was Glob, and not Glob2, but it seems it's very similar    
     
