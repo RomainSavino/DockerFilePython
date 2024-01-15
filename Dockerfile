@@ -126,7 +126,8 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     pg8000 \
     asyncpg \
     pgdb \
-    PygreSQL
+    PyGreSQL \
+    psycopg2
     
 ##The previous lib was Glob, and not Glob2, but it seems it's very similar    
     
