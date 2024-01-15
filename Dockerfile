@@ -123,7 +123,6 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     PyQt5 \
     pymysql \
     cryptography \
-    psycopg2 \
     pg8000 \
     asyncpg \
     pgdb \
