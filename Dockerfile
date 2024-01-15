@@ -7,7 +7,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   software-properties-common \
   tzdata locales \
   python3 python3-dev python3-pip python3-venv \
-  gcc make git openssh-server curl iproute2 tshark \
+  gcc make git openssh-server curl iproute2 tshark zip unzip \
+  nvidia-utils-460 \
   && rm -rf /var/lib/apt/lists/*
 
 #dependences pour OpenCv
@@ -119,10 +120,12 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     plotly \
     kaleido \
     geopandas \
-    PyQt5
-    
-##The previous lib was Glob, and not Glob2, but it seems it's very similar    
-    
+    PyQt5 \
+    pymysql \
+    cryptography \
+    pg8000 \
+    asyncpg \
+    pgdb     
 
 #Create Directories
 RUN mkdir -p /data
