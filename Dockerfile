@@ -126,7 +126,11 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     pg8000 \
     asyncpg \
     pgdb \
-    psycopg2-binary
+    psycopg2-binary \
+    transformers \
+    torchaudio \
+    cudatoolkit==11.1
+    
 
 #Create Directories
 RUN mkdir -p /data
