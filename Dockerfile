@@ -130,7 +130,7 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     transformers \
     torchaudio \
     diffusers \
-    safetensors
+    safetensors \
     transformers \
     optimum \
     auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118/
