@@ -128,7 +128,9 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     pgdb \
     psycopg2-binary \
     transformers \
-    torchaudio
+    torchaudio \
+    diffusers \
+    safetensors
     
 
 #Create Directories
