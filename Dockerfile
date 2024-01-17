@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.0.3-base-ubuntu20.04 
+FROM nvidia/cuda:11.8.1-base-ubuntu20.04 
 
 RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-get update \
@@ -131,6 +131,10 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     torchaudio \
     diffusers \
     safetensors
+    transformers \
+    optimum \
+    auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118/
+
     
 
 #Create Directories
