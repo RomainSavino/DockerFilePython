@@ -128,8 +128,7 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     pgdb \
     psycopg2-binary \
     transformers \
-    torchaudio \
-    cudatoolkit==11.1
+    torchaudio
     
 
 #Create Directories
