@@ -41,12 +41,9 @@ RUN /venv/bin/pip3 install --upgrade pip --no-cache-dir
 
 # Installation des bibliothèques Python
 RUN /venv/bin/pip3 install --no-cache-dir \
-    Flask==1.1.2 \
-    Folium==0.12.1 \
-    haversine==2.3.0 \
-    numpy==1.19.5 \
-    matplotlib==3.3.4 \
-    pandas==1.2.1 \
+    Flask \
+    Folium \
+    haversine \
     plotly==4.14.3 \
     jupyterlab>=3 \
     ipywidgets>=7.6 \
@@ -115,8 +112,6 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     ultralytics \
     grad-cam \
     optuna-distributed \
-    folium \
-    plotly \
     kaleido \
     geopandas
     
