@@ -44,7 +44,6 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     Flask \
     Folium \
     haversine \
-    plotly==4.14.3 \
     jupyterlab>=3 \
     ipywidgets>=7.6 \
     jupyter-dash==0.4.2 \
