@@ -112,7 +112,8 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     grad-cam \
     optuna-distributed \
     kaleido \
-    geopandas
+    geopandas \
+    gunicorn
     
 
 #Create Directories
