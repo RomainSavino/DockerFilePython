@@ -1,9 +1,11 @@
-FROM nvidia/cuda:11.0.3-base-ubuntu20.04 
+# Base image with CUDA
+FROM nvidia/cuda:11.0.3-base-ubuntu20.04
 
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y \
+# Set non-interactive frontend (avoids some prompts)
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update and install basic dependencies
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
   software-properties-common \
   tzdata locales \
   python3 python3-dev python3-pip python3-venv \
@@ -11,20 +13,25 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   nvidia-utils-460 \
   && rm -rf /var/lib/apt/lists/*
 
-#dependences pour OpenCv
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+# Dependencies for OpenCV
+RUN apt-get update && apt-get install -y \
+  ffmpeg libsm6 libxext6
 
-# Add Nvidia cudnn repository
+# Add Nvidia CUDA repository
 ENV OS=ubuntu2004
-RUN wget https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/cuda-${OS}.pin
-RUN mv cuda-${OS}.pin /etc/apt/preferences.d/cuda-repository-pin-600
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/7fa2af80.pub
-RUN add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/ /"
-RUN apt-get update
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/cuda-${OS}.pin \
+  && mv cuda-${OS}.pin /etc/apt/preferences.d/cuda-repository-pin-600 \
+  && apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/7fa2af80.pub \
+  && add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/ /" \
+  && apt-get update
 
-# Fix Cuda and Cudnn version
-ENV cudnn_version=8.1.1.33
+# Set specific versions for CUDA and cuDNN
+ENV cudnn_version=8.9.7
 ENV cuda_version=cuda11.0
+
+# Install cuDNN
+RUN apt-get install -y libcudnn8=${cudnn_version}-1+${cuda_version} \
+  && apt-get install -y libcudnn8-dev=${cudnn_version}-1+${cuda_version}
 
 # Install CUDNN
 RUN apt-get install -y libcudnn8=${cudnn_version}-1+${cuda_version}
