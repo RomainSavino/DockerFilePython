@@ -85,7 +85,7 @@ ENV LD_LIBRARY_PATH $CUDA_HOME/lib64:$LD_LIBRARY_PATH
 RUN /venv/bin/pip3 install --no-cache-dir \
     colorlog==6.8.2  \
 	scikit-image==0.21.0  \
-	scipy==1.12.0  \
+	scipy==1.10.1  \
 	lightning==2.2.0.post0  \
 	onnxruntime==1.17.1  \
 	tensorboard==2.15.2  \
