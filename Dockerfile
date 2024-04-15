@@ -84,21 +84,7 @@ ENV LD_LIBRARY_PATH $CUDA_HOME/lib64:$LD_LIBRARY_PATH
 # Not adding basics python libraries, but we can import them in code directly
 RUN /venv/bin/pip3 install --no-cache-dir \
     colorlog==6.8.2  \
-	h5py==3.10.0  \
-	packaging==23.2  \
-	Pillow==10.2.0  \
-	pre-commit  \
-	progressbar==2.5  \
-	pyrootutils==1.0.4  \
-	pytest==8.1.0  \
-	rich==13.7.1  \
-	rootutils==1.0.7  \
-	setuptools==69.1.1  \
-	sh==2.0.6  \
-	tqdm==4.66.2  \
-	cupy==13.0.0a1 \
-	matplotlib==3.7.5  \
-	numpy==1.26.4  \
+    	numpy==1.24.4  \
 	opencv_python==4.8.1.78  \
 	pandas==2.2.1  \
 	scikit-image==0.22.0  \
@@ -113,7 +99,21 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	hydra-core==1.3.2  \
 	hydra-colorlog==1.2.0  \
 	hydra-optuna-sweeper==1.2.0  \
-	omegaconf==2.3.0
+	omegaconf==2.3.0 \
+	h5py==3.10.0  \
+	packaging==23.2  \
+	Pillow==10.2.0  \
+	pre-commit  \
+	progressbar==2.5  \
+	pyrootutils==1.0.4  \
+	pytest==8.1.0  \
+	rich==13.7.1  \
+	rootutils==1.0.7  \
+	setuptools==69.1.1  \
+	sh==2.0.6  \
+	tqdm==4.66.2  \
+	cupy==13.0.0a1 \
+	matplotlib==3.7.5  
 	
     
 ##The previous lib was Glob, and not Glob2, but it seems it's very similar    
