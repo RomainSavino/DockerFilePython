@@ -14,6 +14,25 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 #dependences pour OpenCv
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
+# Add Nvidia cudnn repository
+ENV OS=ubuntu2004
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/cuda-${OS}.pin
+RUN mv cuda-${OS}.pin /etc/apt/preferences.d/cuda-repository-pin-600
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/7fa2af80.pub
+RUN add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/ /"
+RUN apt-get update
+
+# Fix Cuda and Cudnn version
+ENV cudnn_version=8.1.1.33
+ENV cuda_version=cuda11.0
+
+# Install CUDNN
+RUN apt-get install -y libcudnn8=${cudnn_version}-1+${cuda_version}
+RUN apt-get install -y libcudnn8-dev=${cudnn_version}-1+${cuda_version}
+
+# Adding env directory to path and activate rapids env
+ENV PATH /opt/conda/envs/rapids/bin:$PATH
+RUN /bin/bash -c "source activate rapids"
 
 # replace SH with BASH 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
