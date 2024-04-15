@@ -29,7 +29,7 @@ RUN wget https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/c
 RUN apt-cache madison libcudnn8 libcudnn8-dev
 
 # Set specific versions for CUDA and cuDNN
-ENV cudnn_version=8.9.7
+ENV cudnn_version=8.0.5.39
 ENV cuda_version=cuda11.0
 
 # Install cuDNN
