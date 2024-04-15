@@ -84,10 +84,7 @@ ENV LD_LIBRARY_PATH $CUDA_HOME/lib64:$LD_LIBRARY_PATH
 # Not adding basics python libraries, but we can import them in code directly
 RUN /venv/bin/pip3 install --no-cache-dir \
     colorlog==6.8.2  \
-    	numpy==1.24.4  \
-	opencv_python==4.8.1.78  \
-	pandas==2.0.3  \
-	scikit-image==0.22.0  \
+	scikit-image==0.21.0  \
 	scipy==1.12.0  \
 	lightning==2.2.0.post0  \
 	onnxruntime==1.17.1  \
@@ -113,7 +110,10 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	sh==2.0.6  \
 	tqdm==4.66.2  \
 	cupy==13.0.0a1 \
-	matplotlib==3.7.5  
+	matplotlib==3.7.5 \
+     	numpy==1.24.4  \
+	opencv_python==4.8.1.78  \
+	pandas==2.0.3  
 	
     
 ##The previous lib was Glob, and not Glob2, but it seems it's very similar    
