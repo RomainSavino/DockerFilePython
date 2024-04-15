@@ -25,6 +25,9 @@ RUN wget https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/c
   && add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/ /" \
   && apt-get update
 
+# Debugging: list available versions of libcudnn
+RUN apt-cache madison libcudnn8 libcudnn8-dev
+
 # Set specific versions for CUDA and cuDNN
 ENV cudnn_version=8.9.7
 ENV cuda_version=cuda11.0
@@ -32,10 +35,6 @@ ENV cuda_version=cuda11.0
 # Install cuDNN
 RUN apt-get install -y libcudnn8=${cudnn_version}-1+${cuda_version} \
   && apt-get install -y libcudnn8-dev=${cudnn_version}-1+${cuda_version}
-
-# Install CUDNN
-RUN apt-get install -y libcudnn8=${cudnn_version}-1+${cuda_version}
-RUN apt-get install -y libcudnn8-dev=${cudnn_version}-1+${cuda_version}
 
 # Adding env directory to path and activate rapids env
 ENV PATH /opt/conda/envs/rapids/bin:$PATH
