@@ -74,6 +74,11 @@ RUN /venv/bin/pip3 install --no-cache-dir\
     ptvsd==4.3.2 \
     plotly==5.13.1 
 
+#Dependences Nvidia
+RUN apt-get install -y cuda-toolkit-11-0
+ENV CUDA_HOME /usr/local/cuda-11.0
+ENV PATH $CUDA_HOME/bin:$PATH
+ENV LD_LIBRARY_PATH $CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
 # install all other required python packages
 # Not adding basics python libraries, but we can import them in code directly
