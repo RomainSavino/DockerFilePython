@@ -110,10 +110,11 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	setuptools==69.1.1  \
 	sh==2.0.6  \
 	tqdm==4.66.2  \
-	cupy==13.0.0a1 \
 	matplotlib==3.7.5 \
      	numpy==1.24.4  \
 	pandas==2.0.3      
+
+RUN /venv/bin/pip3 install cupy-cuda110==13.0.0a1 --no-cache-dir
 
 #Create Directories
 RUN mkdir -p /data
