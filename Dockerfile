@@ -88,7 +88,7 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	scipy==1.10.1  \
 	lightning==2.2.0.post0  \
 	onnxruntime==1.17.1  \
-	tensorboard==2.15.2  \
+	tensorboard==2.14.0  \
 	thop==0.1.1.post2209072238  \
 	torch==2.2.1  \
 	torchmetrics==1.3.1  \
