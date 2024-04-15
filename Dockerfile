@@ -94,6 +94,7 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	torchmetrics==1.3.1  \
 	torchvision==0.17.1  \
 	hydra-core==1.3.2  \
+ 	opencv_python==4.8.1.78  \
 	hydra-colorlog==1.2.0  \
 	hydra-optuna-sweeper==1.2.0  \
 	omegaconf==2.3.0 \
@@ -112,7 +113,6 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	cupy==13.0.0a1 \
 	matplotlib==3.7.5 \
      	numpy==1.24.4  \
-	opencv_python==4.8.1.78  \
 	pandas==2.0.3  
 	
     
