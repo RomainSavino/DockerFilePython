@@ -90,7 +90,7 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	hydra-core==1.3.2  \
 	hydra-colorlog==1.2.0  \
 	hydra-optuna-sweeper==1.2.0  \
-	omegaconf==2.3.0  \
+	omegaconf==2.3.0
 	
     
 ##The previous lib was Glob, and not Glob2, but it seems it's very similar    
