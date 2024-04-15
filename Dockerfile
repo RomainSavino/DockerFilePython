@@ -113,11 +113,7 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	cupy==13.0.0a1 \
 	matplotlib==3.7.5 \
      	numpy==1.24.4  \
-	pandas==2.0.3  
-	
-    
-##The previous lib was Glob, and not Glob2, but it seems it's very similar    
-    
+	pandas==2.0.3      
 
 #Create Directories
 RUN mkdir -p /data
