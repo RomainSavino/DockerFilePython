@@ -86,7 +86,7 @@ RUN /venv/bin/pip3 install --no-cache-dir \
     colorlog==6.8.2  \
     	numpy==1.24.4  \
 	opencv_python==4.8.1.78  \
-	pandas==2.2.1  \
+	pandas==2.0.3  \
 	scikit-image==0.22.0  \
 	scipy==1.12.0  \
 	lightning==2.2.0.post0  \
