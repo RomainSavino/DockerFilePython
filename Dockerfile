@@ -73,7 +73,7 @@ RUN /venv/bin/pip3 install --no-cache-dir \
 	setuptools==69.1.1  \
 	sh==2.0.6  \
 	tqdm==4.66.2  \
-	cupy==13.0.0  \
+	cupy==13.0.0a1 \
 	matplotlib==3.8.3  \
 	numpy==1.26.4  \
 	opencv_python==4.8.1.78  \
