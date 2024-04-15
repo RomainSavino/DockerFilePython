@@ -38,7 +38,6 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Adding env directory to path and activate rapids env
 ENV PATH /opt/conda/envs/rapids/bin:$PATH
-RUN /bin/bash -c "source activate rapids"
 
 # Locales gen
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
@@ -64,9 +63,6 @@ RUN /venv/bin/pip3 install --upgrade pip --no-cache-dir
 # Install Pyinstaller 
 RUN /venv/bin/pip3 install pyinstaller --no-cache-dir
 
-
-# Install Pyinstaller 
-RUN /venv/bin/pip3 install pyinstaller --no-cache-dir
 
 # Install jupyterlab and its plotly extension
 RUN /venv/bin/pip3 install --no-cache-dir\
