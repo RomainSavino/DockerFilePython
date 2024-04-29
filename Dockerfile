@@ -1,123 +1,124 @@
-FROM nvidia/cuda:11.0.3-base-ubuntu20.04 
+# Using Python 3.10 as base image
+FROM python:3.10-slim-buster as base
 
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y \
-  software-properties-common \
-  tzdata locales \
-  python3 python3-dev python3-pip python3-venv \
-  gcc make git openssh-server curl iproute2 tshark zip unzip \
-  nvidia-utils-460 \
-  && rm -rf /var/lib/apt/lists/*
+# CUDA base image
+FROM nvidia/cuda:11.0.3-base-ubuntu20.04 as cuda-base
 
-#dependences pour OpenCv
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+# Set up environment
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
 
-# # Add Nvidia CUDA repository
-# ENV OS=ubuntu2004
-# RUN wget https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/cuda-${OS}.pin \
-#   && mv cuda-${OS}.pin /etc/apt/preferences.d/cuda-repository-pin-600 \
-#   && apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/7fa2af80.pub \
-#   && add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/ /" \
-#   && apt-get update
+# Installing system dependencies
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    software-properties-common \
+    tzdata locales \
+    gcc make git openssh-server curl iproute2 tshark \
+    ffmpeg libsm6 libxext6 && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# # Debugging: list available versions of libcudnn
-# RUN apt-cache madison libcudnn8 libcudnn8-dev
+# Set timezone and locale
+RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
+    dpkg-reconfigure --frontend noninteractive tzdata && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen && \
+    dpkg-reconfigure --frontend noninteractive locales
 
-# # Set specific versions for CUDA and cuDNN
-# ENV cudnn_version=8.0.5.39
-# ENV cuda_version=cuda11.0
-
-# # Install cuDNN
-# RUN apt-get install -y libcudnn8=${cudnn_version}-1+${cuda_version} \
-#   && apt-get install -y libcudnn8-dev=${cudnn_version}-1+${cuda_version}
-  
-# replace SH with BASH 
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-
-# Adding env directory to path and activate rapids env
-ENV PATH /opt/conda/envs/rapids/bin:$PATH
-
-# Locales gen
-RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
-  && dpkg-reconfigure --frontend noninteractive tzdata \
-  && export LC_ALL="fr_FR.UTF-8" \
-  && export LC_CTYPE="fr_FR.UTF-8" \
-  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-  && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
-  && locale-gen \
-  && dpkg-reconfigure --frontend noninteractive locales
-
-# SSH run folder
+# SSH setup
 RUN mkdir -p /run/sshd
 
-# create python venv
-RUN mkdir -p /venv \
-  && python3 -m venv /venv/
+# Python environment setup
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+RUN pip install --upgrade pip
 
-RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
+# Install additional Python packages
+RUN pip install --no-cache-dir \
+    Flask \
+    Folium \
+    haversine \
+    jupyterlab \
+    ipywidgets \
+    jupyter-dash \
+    ipython= \
+    ipykernel \
+    ptvsd \
+    psycopg2 \
+    tensorflow \
+    keras \
+    flask \
+    flask-restful \
+    flask-cors \
+    xgboost \
+    ahrs \
+    alembic \
+    argparse \
+    beautifulsoup4 \
+    bokeh \
+    dash \
+    dash-bootstrap-components \
+    dash_daq \
+    datetime \
+    docopt \
+    dpkt \
+    glob2 \
+    gpsd-py3 \
+    gpxpy \
+    graphviz \
+    gunicorn \
+    gym \
+    h5py \
+    ipympl \
+    joblib \
+    kaleido \
+    lxml \
+    mako \
+    matplotlib \
+    numpy \
+    opencv-python \
+    openpyxl \
+    pandas \
+    pillow \
+    psutil \
+    pylint \
+    pyserial \
+    python-dateutil \
+    requests \
+    requests_html \
+    scikit-commpy \
+    scikit-learn \
+    scipy \
+    seaborn \
+    setuptools \
+    sqlalchemy \
+    tabulate \
+    tensorboard \
+    tifffile \
+    torch \
+    torchvision \
+    uncompyle6 \
+    visdom \
+    xlrd \
+    xmltodict \
+    scikit-optimize \
+    optuna \
+    hyperopt \
+    bashplotlib \
+    albumentations \
+    timm \
+    lightgbm \
+    ultralytics \
+    grad-cam \
+    optuna-distributed \
+    kaleido \
+    geopandas \
+    gunicorn \
+    transformers \
+    datasets \
+    torchtext \
+    torchaudio
 
-RUN /venv/bin/pip3 install --upgrade pip --no-cache-dir
-
-# Install Pyinstaller 
-RUN /venv/bin/pip3 install pyinstaller --no-cache-dir
-
-
-# Install jupyterlab and its plotly extension
-RUN /venv/bin/pip3 install --no-cache-dir\
-    jupyterlab>=3 \
-    ipywidgets>=7.6 \
-    jupyter-dash==0.4.2 \
-    ipython==8.11.0 \
-    ipykernel==6.21.2 \
-    ptvsd==4.3.2 \
-    plotly==5.13.1 
-
-#Dependences Nvidia
-RUN apt-get install -y cuda-toolkit-11-0
-ENV CUDA_HOME /usr/local/cuda-11.0
-ENV PATH $CUDA_HOME/bin:$PATH
-ENV LD_LIBRARY_PATH $CUDA_HOME/lib64:$LD_LIBRARY_PATH
-
-# install all other required python packages
-# Not adding basics python libraries, but we can import them in code directly
-RUN /venv/bin/pip3 install --no-cache-dir \
-    colorlog==6.8.2  \
-	scikit-image==0.21.0  \
-	scipy==1.10.1  \
-	lightning==2.2.0.post0  \
-	onnxruntime==1.17.1  \
-	tensorboard==2.14.0  \
-	thop==0.1.1.post2209072238  \
-	torch==2.2.1  \
-	torchmetrics==1.3.1  \
-	torchvision==0.17.1  \
-	hydra-core==1.3.2  \
- 	opencv_python==4.8.1.78  \
-	hydra-colorlog==1.2.0  \
-	hydra-optuna-sweeper==1.2.0  \
-	omegaconf==2.3.0 \
-	h5py==3.10.0  \
-	packaging==23.2  \
-	Pillow==10.2.0  \
-	pre-commit  \
-	progressbar==2.5  \
-	pyrootutils==1.0.4  \
-	pytest==8.1.0  \
-	rich==13.7.1  \
-	rootutils==1.0.7  \
-	setuptools==69.1.1  \
-	sh==2.0.6  \
-	tqdm==4.66.2  \
-	matplotlib==3.7.5 \
-     	numpy==1.24.4  \
-	pandas==2.0.3      
-
-RUN /venv/bin/pip3 install cupy-cuda110==12.3.0 --no-cache-dir
-
-#Create Directories
-RUN mkdir -p /data
-RUN mkdir -p /experiments
-RUN mkdir -p /home/
-WORKDIR /home/
+RUN mkdir -p /data /experiments /home
+WORKDIR /home
