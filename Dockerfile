@@ -6,6 +6,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
+# Preconfigure tzdata
+RUN echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
+RUN echo 'tzdata tzdata/Zones/Europe select Paris' | debconf-set-selections
+
 # Python environment setup
 RUN python -m venv /venv
 ENV PATH="/venv/bin:$PATH"
