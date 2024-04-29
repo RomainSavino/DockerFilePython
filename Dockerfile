@@ -5,6 +5,7 @@ FROM python:3.10-slim-buster as python-base
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
+ENV TZ=Europe/Paris
 
 # Preconfigure tzdata
 RUN echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
