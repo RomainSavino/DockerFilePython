@@ -51,6 +51,3 @@ RUN mkdir -p /run/sshd
 # Prepare working directory and data directories
 RUN mkdir -p /data /experiments /home
 WORKDIR /home
-
-# Set command to run on container start
-CMD ["/usr/sbin/sshd", "-D"]
