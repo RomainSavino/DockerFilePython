@@ -20,7 +20,7 @@ RUN pip install --upgrade pip && \
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
     seaborn setuptools sqlalchemy tabulate tensorboard tifffile torch torchvision uncompyle6 \
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
-    lightgbom ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
+    lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
     datasets torchtext torchaudio
 
 # Stage 2: NVIDIA CUDA Base
