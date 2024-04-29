@@ -42,12 +42,15 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Set timezone and locale
-RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
-    dpkg-reconfigure --frontend noninteractive tzdata && \
-    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-    echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
-    locale-gen && \
-    dpkg-reconfigure --frontend noninteractive locales
+RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
+  && dpkg-reconfigure --frontend noninteractive tzdata \
+  && export LC_ALL="fr_FR.UTF-8" \
+  && export LC_CTYPE="fr_FR.UTF-8" \
+  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+  && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+  && locale-gen \
+  && dpkg-reconfigure --frontend noninteractive locales
+
 
 # SSH setup
 RUN mkdir -p /run/sshd
