@@ -1,21 +1,16 @@
-# Stage 1: Python Setup
 FROM python:3.10-slim-buster as python-base
 
-# Set up environment
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 ENV TZ=Europe/Paris
 
-# Preconfigure tzdata
 RUN echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
 RUN echo 'tzdata tzdata/Zones/Europe select Paris' | debconf-set-selections
 
-# Python environment setup
 RUN python -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 
-# Install Python packages
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
     ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
@@ -26,23 +21,21 @@ RUN pip install --upgrade pip && \
     seaborn setuptools sqlalchemy tabulate tensorboard tifffile torch torchvision uncompyle6 \
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
     lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
-    datasets torchtext torchaudio
+    datasets torchtext torchaudio \
+    apache-airflow==2.3.0 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.3.0/constraints-3.7.txt" \
+    mlflow
 
-# Stage 2: NVIDIA CUDA Base
 FROM nvidia/cuda:11.0.3-base-ubuntu20.04 as cuda-base
 
-# Copy Python environment from python-base
 COPY --from=python-base /venv /venv
 ENV PATH="/venv/bin:$PATH"
 
-# Install system dependencies
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
     ffmpeg libsm6 libxext6 && \
     rm -rf /var/lib/apt/lists/* && \
     rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# Set timezone and locale
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
   && dpkg-reconfigure --frontend noninteractive tzdata \
   && export LC_ALL="fr_FR.UTF-8" \
@@ -52,10 +45,7 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
   && locale-gen \
   && dpkg-reconfigure --frontend noninteractive locales
 
-
-# SSH setup
 RUN mkdir -p /run/sshd
 
-# Prepare working directory and data directories
 RUN mkdir -p /data /experiments /home
 WORKDIR /home
