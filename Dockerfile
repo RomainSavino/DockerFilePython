@@ -11,6 +11,12 @@ RUN echo 'tzdata tzdata/Zones/Europe select Paris' | debconf-set-selections
 RUN python -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libffi-dev \
+    libssl-dev \
+    python3-dev
+
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
     ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
