@@ -19,6 +19,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install --upgrade pip setuptools wheel cython
 
+RUN pip install PyYAML
+
+
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
     ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
