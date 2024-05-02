@@ -17,7 +17,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     python3-dev
 
-RUN pip install --upgrade pip setuptools wheel cython<3.0
+RUN pip install --upgrade pip setuptools wheel
+
+RUN pip install cython < 3.0
 
 RUN pip install PyYAML==5.4.1
 
