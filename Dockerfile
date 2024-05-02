@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install --upgrade pip setuptools wheel cython
 
-RUN pip install PyYAML
+RUN pip install PyYAML==5.4.1
 
 
 RUN pip install --upgrade pip && \
