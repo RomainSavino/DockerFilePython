@@ -1,4 +1,4 @@
-FROM python:3.10-slim-buster as python-base
+FROM python:3.10-buster as python-base
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
