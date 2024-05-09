@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install --upgrade pip setuptools wheel
 
-RUN pip install cython < 3.0
+RUN pip install "cython<3.0"
 
 RUN pip install PyYAML==5.4.1
 
