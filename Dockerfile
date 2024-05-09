@@ -33,8 +33,7 @@ RUN pip install --upgrade pip && \
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
     lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
     datasets torchtext torchaudio \
-    apache-airflow==2.3.0 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.3.0/constraints-3.7.txt" \
-    mlflow
+    apache-airflow==2.3.0
 
 FROM nvidia/cuda:11.0.3-base-ubuntu20.04 as cuda-base
 
