@@ -32,8 +32,7 @@ RUN pip install --upgrade pip && \
     seaborn sqlalchemy tabulate tensorboard tifffile torch torchvision uncompyle6 \
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
     lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
-    datasets torchtext torchaudio \
-    apache-airflow==2.3.0
+    datasets torchtext torchaudio
 
 FROM nvidia/cuda:11.0.3-base-ubuntu20.04 as cuda-base
 
