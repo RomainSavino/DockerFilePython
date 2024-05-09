@@ -22,9 +22,6 @@ RUN pip install --upgrade pip setuptools wheel
 
 RUN pip install "cython<3.0"
 
-RUN pip install PyYAML==5.4.1
-
-
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
     ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
