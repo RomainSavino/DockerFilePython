@@ -25,7 +25,7 @@ RUN pip install "cython<3.0"
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
     ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
-    xgboost ahrs alembic argparse beautifulsoup4 bokeh dash dash-bootstrap-components \
+    xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
     joblib kaleido lxml mako matplotlib numpy opencv-python openpyxl pandas pillow psutil \
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
