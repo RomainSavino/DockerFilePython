@@ -30,8 +30,9 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
     rm -rf /var/lib/apt/lists/*
 
 # Créer et activer l'environnement virtuel
+RUN mkdir -p /venv
 RUN python3.10 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
+RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
 # Mettre à jour pip et installer les packages nécessaires
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
