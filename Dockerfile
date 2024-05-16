@@ -1,12 +1,26 @@
 # Utiliser l'image de base NVIDIA CUDA 11.0.3 avec Ubuntu 20.04
 FROM nvidia/cuda:11.0.3-base-ubuntu20.04
 ENV DEBIAN_FRONTEND=noninteractive
+
 # Mettre à jour et installer les dépendances nécessaires
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
     ffmpeg libsm6 libxext6 && \
     rm -rf /var/lib/apt/lists/* && \
     rm /bin/sh && ln -s /bin/bash /bin/sh
+
+# replace SH with BASH 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
+  && dpkg-reconfigure --frontend noninteractive tzdata \
+  && export LC_ALL="fr_FR.UTF-8" \
+  && export LC_CTYPE="fr_FR.UTF-8" \
+  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+  && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+  && locale-gen \
+  && dpkg-reconfigure --frontend noninteractive locales
+RUN mkdir -p /run/sshd
+
 
 # Installer Python 3.10 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa && \
