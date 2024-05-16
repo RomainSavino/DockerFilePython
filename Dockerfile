@@ -63,6 +63,3 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     hydra-colorlog \
     hydra-optuna-sweeper \
     omegaconf
-
-# Définir la commande par défaut pour lancer un shell bash
-CMD ["bash"]
