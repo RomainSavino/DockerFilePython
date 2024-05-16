@@ -1,6 +1,6 @@
 # Utiliser l'image de base NVIDIA CUDA 11.0.3 avec Ubuntu 20.04
 FROM nvidia/cuda:11.0.3-base-ubuntu20.04
-
+ENV DEBIAN_FRONTEND=noninteractive
 # Mettre à jour et installer les dépendances nécessaires
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
