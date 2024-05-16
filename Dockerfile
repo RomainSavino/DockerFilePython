@@ -63,4 +63,6 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     hydra-core \
     hydra-colorlog \
     hydra-optuna-sweeper \
-    omegaconf
+    omegaconf \
+    onnxruntime \
+    onnx
