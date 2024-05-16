@@ -1,26 +1,25 @@
-# Base image with Python 3.10
-FROM python:3.10-buster as python-base
+# Utiliser l'image de base NVIDIA CUDA 11.0.3 avec Ubuntu 20.04
+FROM nvidia/cuda:11.0.3-base-ubuntu20.04
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
-ENV TZ=Europe/Paris
+# Mettre à jour et installer les dépendances nécessaires
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
+    ffmpeg libsm6 libxext6 && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN echo 'tzdata tzdata/Areas select Europe' | debconf-set-selections
-RUN echo 'tzdata tzdata/Zones/Europe select Paris' | debconf-set-selections
+# Installer Python 3.10 et ses dépendances
+RUN add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 python3.10-venv python3.10-dev \
+    build-essential libffi-dev libssl-dev libyaml-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-# Create a virtual environment with Python 3.10
+# Créer et activer l'environnement virtuel
 RUN python3.10 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libffi-dev \
-    libssl-dev \
-    python3.10-dev \
-    libyaml-dev
-
-# Upgrade pip and install packages inside the virtual environment
+# Mettre à jour pip et installer les packages nécessaires
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
 RUN /venv/bin/pip install "cython<3.0"
 RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
@@ -34,28 +33,5 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
     datasets torchtext torchaudio
 
-# CUDA base image
-FROM nvidia/cuda:11.0.3-base-ubuntu20.04 as cuda-base
-
-COPY --from=python-base /venv /venv
-ENV PATH="/venv/bin:$PATH"
-
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
-    ffmpeg libsm6 libxext6 && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm /bin/sh && ln -s /bin/bash /bin/sh
-
-RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
-  && dpkg-reconfigure --frontend noninteractive tzdata \
-  && export LC_ALL="fr_FR.UTF-8" \
-  && export LC_CTYPE="fr_FR.UTF-8" \
-  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-  && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
-  && locale-gen \
-  && dpkg-reconfigure --frontend noninteractive locales
-
-RUN mkdir -p /run/sshd
-
-RUN mkdir -p /data /experiments /home
-WORKDIR /home
+# Définir la commande par défaut pour lancer un shell bash
+CMD ["bash"]
