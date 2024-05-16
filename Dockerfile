@@ -1,6 +1,5 @@
 # Utiliser l'image de base NVIDIA CUDA 11.0.3 avec Ubuntu 20.04
 FROM nvidia/cuda:11.0.3-base-ubuntu20.04
-ENV DEBIAN_FRONTEND=noninteractive
 
 # Mettre à jour et installer les dépendances nécessaires
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
@@ -33,6 +32,23 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
     lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
     datasets torchtext torchaudio
+
+RUN /venv/bin/pip install --no-cache-dir pre-commit \
+    progressbar==2.5 \
+    pyrootutils==1.0.4 \
+    pytest \
+    rootutils==1.0.7 \
+    setuptools \
+    sh==2.0.6 \
+    cupy-cuda110==13.0.0 \
+    opencv-python \
+    lightning \
+    onnxruntime \
+    torchmetrics \
+    hydra-core \
+    hydra-colorlog \
+    hydra-optuna-sweeper \
+    omegaconf
 
 # Définir la commande par défaut pour lancer un shell bash
 CMD ["bash"]
