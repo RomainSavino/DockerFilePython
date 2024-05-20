@@ -9,6 +9,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     rm -rf /var/lib/apt/lists/* && \
     rm /bin/sh && ln -s /bin/bash /bin/sh
 
+RUN apt-get install -y postgresql-client
+
 # replace SH with BASH 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
