@@ -5,11 +5,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Mettre à jour et installer les dépendances nécessaires
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
-    ffmpeg libsm6 libxext6 && \
+    ffmpeg libsm6 libxext6 postgresql-client && \
     rm -rf /var/lib/apt/lists/* && \
     rm /bin/sh && ln -s /bin/bash /bin/sh
-
-RUN apt-get install -y postgresql-client
 
 # replace SH with BASH 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
