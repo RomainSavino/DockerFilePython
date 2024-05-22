@@ -65,4 +65,6 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     hydra-optuna-sweeper \
     omegaconf \
     onnxruntime \
-    onnx
+    onnx \
+    pickle \
+    joblib
