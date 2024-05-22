@@ -66,5 +66,5 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     omegaconf \
     onnxruntime \
     onnx \
-    pickle \
+    pickle5 \
     joblib
