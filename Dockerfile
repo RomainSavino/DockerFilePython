@@ -1,24 +1,16 @@
-FROM nvidia/cuda:11.0.3-base-ubuntu20.04 
+# Utiliser l'image de base NVIDIA CUDA 11.0.3 avec Ubuntu 20.04
+FROM nvidia/cuda:11.0.3-base-ubuntu20.04
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y \
-  software-properties-common \
-  tzdata locales \
-  python3 python3-dev python3-pip python3-venv \
-  gcc make git openssh-server curl iproute2 tshark zip unzip \
-  nvidia-utils-460 \
-  && rm -rf /var/lib/apt/lists/*
-
-#dependences pour OpenCv
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
-
+# Mettre à jour et installer les dépendances nécessaires
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
+    ffmpeg libsm6 libxext6 postgresql-client && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # replace SH with BASH 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-
-# Locales gen
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
   && dpkg-reconfigure --frontend noninteractive tzdata \
   && export LC_ALL="fr_FR.UTF-8" \
@@ -27,108 +19,52 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
   && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
   && locale-gen \
   && dpkg-reconfigure --frontend noninteractive locales
-
-# SSH run folder
 RUN mkdir -p /run/sshd
 
-# create python venv
-RUN mkdir -p /venv \
-  && python3 -m venv /venv/
 
+# Installer Python 3.10 et ses dépendances
+RUN add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 python3.10-venv python3.10-dev \
+    build-essential libffi-dev libssl-dev libyaml-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Créer et activer l'environnement virtuel
+RUN mkdir -p /venv
+RUN python3.10 -m venv /venv
 RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
-RUN /venv/bin/pip3 install --upgrade pip --no-cache-dir
+# Mettre à jour pip et installer les packages nécessaires
+RUN /venv/bin/pip install --upgrade pip setuptools wheel
+RUN /venv/bin/pip install "cython<3.0"
+RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
+    ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
+    xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
+    dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
+    joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
+    pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
+    seaborn sqlalchemy tabulate tensorboard tifffile torch torchvision uncompyle6 \
+    visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
+    lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
+    datasets torchtext torchaudio
 
-# Install Pyinstaller 
-RUN /venv/bin/pip3 install pyinstaller --no-cache-dir
-
-# Install jupyterlab and its plotly extension
-RUN /venv/bin/pip3 install --no-cache-dir\
-    jupyterlab>=3 \
-    ipywidgets>=7.6 \
-    jupyter-dash==0.4.2 \
-    ipython==8.11.0 \
-    ipykernel==6.21.2 \
-    ptvsd==4.3.2 \
-    plotly==5.13.1 
-
-
-# install all other required python packages
-# Not adding basics python libraries, but we can import them in code directly
-RUN /venv/bin/pip3 install --no-cache-dir \
-    ahrs==0.3.1  \
-    alembic==1.10.1  \
-    argparse==1.1  \
-    beautifulsoup4==4.11.2  \
-    bokeh==3.0.3  \
-    dash==2.8.1  \
-    dash-bootstrap-components  \
-    dash_daq==0.5.0  \
-    datetime  \
-    docopt==0.6.2  \
-    dpkt==1.9.8  \
-    glob2==0.7  \ 
-    gpsd-py3  \
-    gpxpy==1.5.0 \
-    graphviz==0.20.1  \
-    gunicorn==20.1.0  \
-    gym==0.26.2  \
-    h5py==3.8.0  \
-    ipympl==0.9.3  \
-    joblib==1.2.0  \
-    kaleido==0.2.1  \ 
-    lxml==4.9.2 \
-    mako==1.2.4  \
-    matplotlib  \
-    numpy==1.24.2  \
-    opencv-python  \
-    openpyxl==3.1.1  \
-    pandas==1.5.3  \
-    pillow  \
-    psutil==5.9.4  \
-    pylint==2.16.4  \
-    pyserial  \
-    python-dateutil  \
-    requests==2.28.2  \
-    requests_html  \
-    scikit-commpy  \
-    scikit-learn  \
-    scipy==1.10.1  \
-    seaborn==0.12.2  \
-    setuptools==44.0.0  \
-    sqlalchemy==2.0.5.post1  \
-    tabulate==0.9.0  \
-    tensorboard==2.12.0 \
-    tifffile==2023.2.28  \
-    torch==1.13.1  \ 
-    torchvision==0.14.1  \
-    uncompyle6==3.9.0  \
-    visdom==0.2.4  \
-    xlrd==2.0.1  \
-    xmltodict==0.13.0 \
-    scikit-optimize \
-    optuna \
-    hyperopt \
-    bashplotlib \
-    albumentations \
-    timm \
-    lightgbm \
-    ultralytics \
-    grad-cam \
-    optuna-distributed \
-    folium \
-    plotly \
-    kaleido \
-    geopandas \
-    PyQt5 \
-    pymysql \
-    cryptography \
-    pg8000 \
-    asyncpg \
-    pgdb     
-
-#Create Directories
-RUN mkdir -p /data
-RUN mkdir -p /experiments
-RUN mkdir -p /home/
-WORKDIR /home/
+RUN /venv/bin/pip install --no-cache-dir pre-commit \
+    progressbar==2.5 \
+    pyrootutils==1.0.4 \
+    pytest \
+    rootutils==1.0.7 \
+    setuptools \
+    sh==2.0.6 \
+    cupy-cuda110==12.3.0 \
+    opencv-python \
+    lightning \
+    onnxruntime \
+    torchmetrics \
+    hydra-core \
+    hydra-colorlog \
+    hydra-optuna-sweeper \
+    omegaconf \
+    onnxruntime \
+    onnx \
+    pickle5 \
+    joblib
