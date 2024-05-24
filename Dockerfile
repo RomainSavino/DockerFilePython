@@ -1,9 +1,6 @@
 # Utiliser une image de base Ubuntu
 FROM ubuntu:20.04
 
-# Définir le mainteneur
-LABEL maintainer="votre_email@example.com"
-
 # Définir les arguments de build
 ARG DEBIAN_FRONTEND=noninteractive
 
