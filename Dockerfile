@@ -62,7 +62,3 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     cupy-cuda110==12.3.0 \
     opencv-python \
     torchsummary
-
-# Script pour vérifier si CUDA est disponible
-RUN echo 'import torch; print(torch.cuda.is_available())' > test_torch.py
-RUN /venv/bin/python3.10 test_torch.py
