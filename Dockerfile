@@ -48,7 +48,7 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     hydra-optuna-sweeper omegaconf onnxruntime onnx pickle5 joblib lightning
 
 # Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.3
-RUN conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch
+RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1+cu113
 
 # Installer les autres packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
