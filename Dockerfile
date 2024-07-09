@@ -1,5 +1,5 @@
 # Utiliser l'image de base NVIDIA CUDA 11.4.2 avec cuDNN 8 et Ubuntu 20.04
-FROM nvidia/cuda:11.4.2-cudnn8-runtime-ubuntu20.04
+FROM nvidia/cuda:11.4.3-runtime-ubuntu20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Mettre à jour et installer les dépendances nécessaires
