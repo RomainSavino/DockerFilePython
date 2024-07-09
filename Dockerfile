@@ -44,11 +44,11 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
     seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile visdom xlrd xmltodict scikit-optimize \
     optuna hyperopt bashplotlib albumentations timm lightgbm ultralytics grad-cam optuna-distributed \
-    kaleido geopandas gunicorn transformers datasets torchtext torchmetrics hydra-core hydra-colorlog \
+    kaleido geopandas gunicorn datasets torchtext torchmetrics hydra-core hydra-colorlog \
     hydra-optuna-sweeper omegaconf onnxruntime onnx pickle5 joblib lightning
 
 # Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.3
-RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1
+RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 
 
 # Installer les autres packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
@@ -58,6 +58,5 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     rootutils==1.0.7 \
     setuptools \
     sh==2.0.6 \
-    cupy-cuda110==12.3.0 \
     opencv-python \
     torchsummary
