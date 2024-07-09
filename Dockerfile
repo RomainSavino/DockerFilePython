@@ -21,7 +21,6 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
   && dpkg-reconfigure --frontend noninteractive locales
 RUN mkdir -p /run/sshd
 
-
 # Installer Python 3.10 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && apt-get install -y --no-install-recommends \
@@ -48,8 +47,8 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     kaleido geopandas gunicorn transformers datasets torchtext torchmetrics hydra-core hydra-colorlog \
     hydra-optuna-sweeper omegaconf onnxruntime onnx pickle5 joblib lightning
 
-# Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.4
-RUN /venv/bin/pip install --no-cache-dir torch==1.11.0+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1
+# Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.3
+RUN conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch
 
 # Installer les autres packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
