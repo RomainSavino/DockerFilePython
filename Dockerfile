@@ -1,5 +1,5 @@
-# Utiliser l'image de base NVIDIA CUDA 11.4.2 avec Ubuntu 20.04
-FROM nvidia/cuda:11.4.2-base-ubuntu20.04
+# Utiliser l'image de base NVIDIA CUDA 11.4.2 avec cuDNN 8 et Ubuntu 20.04
+FROM nvidia/cuda:11.4.2-cudnn8-runtime-ubuntu20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Mettre à jour et installer les dépendances nécessaires
@@ -61,3 +61,7 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     onnxruntime \
     onnx \
     torchsummary
+
+# Script pour vérifier si CUDA est disponible
+RUN echo 'import torch; print(torch.cuda.is_available())' > test_torch.py
+RUN /venv/bin/python3.10 test_torch.py
