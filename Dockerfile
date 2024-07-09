@@ -1,4 +1,4 @@
-# Utiliser l'image de base NVIDIA CUDA 11.4.2 avec cuDNN 8 et Ubuntu 20.04
+# Utiliser l'image de base NVIDIA CUDA 11.4.3 avec Ubuntu 20.04
 FROM nvidia/cuda:11.4.3-runtime-ubuntu20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -43,12 +43,15 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
     joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
-    seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision torchaudio accelerate \
-    visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
-    lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
-    datasets torchtext torchmetrics hydra-core hydra-colorlog hydra-optuna-sweeper omegaconf \
-    onnxruntime onnx pickle5 joblib lightning
+    seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile visdom xlrd xmltodict scikit-optimize \
+    optuna hyperopt bashplotlib albumentations timm lightgbm ultralytics grad-cam optuna-distributed \
+    kaleido geopandas gunicorn transformers datasets torchtext torchmetrics hydra-core hydra-colorlog \
+    hydra-optuna-sweeper omegaconf onnxruntime onnx pickle5 joblib lightning
 
+# Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.4
+RUN /venv/bin/pip install --no-cache-dir torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1
+
+# Installer les autres packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
     progressbar==2.5 \
     pyrootutils==1.0.4 \
@@ -58,6 +61,8 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     sh==2.0.6 \
     cupy-cuda110==12.3.0 \
     opencv-python \
-    onnxruntime \
-    onnx \
     torchsummary
+
+# Script pour vérifier si CUDA est disponible
+RUN echo 'import torch; print(torch.cuda.is_available())' > test_torch.py
+RUN /venv/bin/python3.10 test_torch.py
