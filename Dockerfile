@@ -1,5 +1,5 @@
-# Utiliser l'image de base NVIDIA CUDA 11.0.3 avec Ubuntu 20.04
-FROM nvidia/cuda:11.0.3-base-ubuntu20.04
+# Utiliser l'image de base NVIDIA CUDA 11.4.2 avec Ubuntu 20.04
+FROM nvidia/cuda:11.4.2-base-ubuntu20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Mettre à jour et installer les dépendances nécessaires
@@ -43,10 +43,11 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
     joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
-    seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision uncompyle6 \
+    seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision torchaudio accelerate \
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
     lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
-    datasets torchtext torchaudio accelerate torchsummary
+    datasets torchtext torchmetrics hydra-core hydra-colorlog hydra-optuna-sweeper omegaconf \
+    onnxruntime onnx pickle5 joblib lightning
 
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
     progressbar==2.5 \
@@ -57,14 +58,6 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     sh==2.0.6 \
     cupy-cuda110==12.3.0 \
     opencv-python \
-    lightning \
-    onnxruntime \
-    torchmetrics \
-    hydra-core \
-    hydra-colorlog \
-    hydra-optuna-sweeper \
-    omegaconf \
     onnxruntime \
     onnx \
-    pickle5 \
-    joblib
+    torchsummary
