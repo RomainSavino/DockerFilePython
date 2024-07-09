@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Mettre à jour et installer les dépendances nécessaires
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
-    ffmpeg libsm6 libxext6 postgresql-client && \
+    ffmpeg libsm6 libxext6 postgresql-client libopencv-dev pkg-config libboost-program-options-dev && \
     rm -rf /var/lib/apt/lists/* && \
     rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -43,10 +43,10 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
     joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
-    seaborn sqlalchemy tabulate tensorboard tifffile torch torchvision uncompyle6 \
+    seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision uncompyle6 \
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
     lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
-    datasets torchtext torchaudio
+    datasets torchtext torchaudio accelerate torchsummary
 
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
     progressbar==2.5 \
