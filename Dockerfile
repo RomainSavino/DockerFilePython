@@ -36,8 +36,8 @@ RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 # Mettre à jour pip et installer les packages nécessaires
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
 RUN /venv/bin/pip install "cython<3.0"
-RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
-    ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
+RUN /venv/bin/pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
+    ipython ipykernel ptvsd psycopg2-binary tensorflow keras \
     xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
     joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
@@ -45,7 +45,7 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile visdom xlrd xmltodict scikit-optimize \
     optuna hyperopt bashplotlib albumentations timm lightgbm ultralytics grad-cam optuna-distributed \
     kaleido geopandas gunicorn datasets torchtext torchmetrics hydra-core hydra-colorlog \
-    hydra-optuna-sweeper omegaconf onnxruntime onnx pickle5 joblib lightning
+    hydra-optuna-sweeper omegaconf joblib lightning
 
 # Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.3
 RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 
@@ -59,4 +59,3 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     setuptools \
     sh==2.0.6 \
     opencv-python \
-    torchsummary
