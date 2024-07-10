@@ -47,6 +47,9 @@ RUN /venv/bin/pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
     kaleido geopandas gunicorn datasets \
     hydra-optuna-sweeper omegaconf joblib lightning
 
+# Supprimer les versions existantes de PyTorch et ses dépendances
+RUN /venv/bin/pip uninstall -y torch torchvision torchaudio
+
 # Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.3
 RUN /venv/bin/pip install --no-cache-dir \
     torch==1.12.1+cu113 torchvision==0.13.1+cu113 -f https://download.pytorch.org/whl/torch_stable.html
@@ -59,4 +62,4 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     rootutils==1.0.7 \
     setuptools \
     sh==2.0.6 \
-    opencv-python \
+    opencv-python
