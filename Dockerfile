@@ -44,7 +44,7 @@ RUN /venv/bin/pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
     seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile visdom xlrd xmltodict scikit-optimize \
     optuna hyperopt bashplotlib albumentations timm grad-cam optuna-distributed \
-    kaleido geopandas gunicorn datasets torchtext \
+    kaleido geopandas gunicorn datasets \
     hydra-optuna-sweeper omegaconf joblib lightning
 
 # Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.3
