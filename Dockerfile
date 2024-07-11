@@ -6,20 +6,15 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
     ffmpeg libsm6 libxext6 libopencv-dev pkg-config libboost-program-options-dev && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm /bin/sh && ln -s /bin/bash /bin/sh
+    rm -rf /var/lib/apt/lists/*
 
-# replace SH with BASH 
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+# Configuration de la localisation
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
-  && dpkg-reconfigure --frontend noninteractive tzdata \
-  && export LC_ALL="fr_FR.UTF-8" \
-  && export LC_CTYPE="fr_FR.UTF-8" \
-  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-  && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
-  && locale-gen \
-  && dpkg-reconfigure --frontend noninteractive locales
-RUN mkdir -p /run/sshd
+    && dpkg-reconfigure --frontend noninteractive tzdata \
+    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen \
+    && update-locale LANG=fr_FR.UTF-8
 
 # Installer Python 3.10 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa && \
@@ -29,7 +24,6 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
     rm -rf /var/lib/apt/lists/*
 
 # Créer et activer l'environnement virtuel
-RUN mkdir -p /venv
 RUN python3.10 -m venv /venv
 RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
@@ -37,22 +31,21 @@ RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
 RUN /venv/bin/pip install "cython<3.0"
 RUN /venv/bin/pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
-    ipython ipykernel ptvsd psycopg2-binary tensorflow keras \
+    ipython ipykernel ptvsd tensorflow keras \
     xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
     joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
     seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile visdom xlrd xmltodict scikit-optimize \
-    optuna hyperopt bashplotlib albumentations timm grad-cam optuna-distributed \
+    optuna hyperopt albumentations timm  optuna-distributed \
     kaleido geopandas gunicorn datasets torchtext \
     hydra-optuna-sweeper omegaconf joblib lightning
 
-# Installer les versions spécifiques de PyTorch et ses dépendances compatibles avec CUDA 11.3
-RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 
+# Installer PyTorch version 1.12.1 avec CUDA 11.3
+RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch
 
 # Installer les autres packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
-    progressbar==2.5 \
     pyrootutils==1.0.4 \
     pytest \
     rootutils==1.0.7 \
