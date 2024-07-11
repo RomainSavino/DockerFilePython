@@ -42,7 +42,7 @@ RUN /venv/bin/pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
     hydra-optuna-sweeper omegaconf joblib lightning
 
 # Installer PyTorch version 1.12.1 avec CUDA 11.3
-RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch
+RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3
 
 # Installer les autres packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
