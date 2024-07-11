@@ -49,6 +49,8 @@ RUN pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
     kaleido geopandas gunicorn datasets torchtext \
     hydra-optuna-sweeper omegaconf joblib lightning
 
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Installer les autres packages nécessaires
 RUN pip install --no-cache-dir pre-commit \
     pyrootutils==1.0.4 \
