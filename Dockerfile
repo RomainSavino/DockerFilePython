@@ -27,6 +27,9 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
 RUN python3.10 -m venv /venv
 RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
+# Installer PyTorch version 1.12.1 avec CUDA 11.3
+RUN /venv/bin/pip install --no-cache-dir torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
+
 # Mettre à jour pip et installer les packages nécessaires
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
 RUN /venv/bin/pip install "cython<3.0"
@@ -40,9 +43,6 @@ RUN /venv/bin/pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
     optuna hyperopt albumentations timm  optuna-distributed \
     kaleido geopandas gunicorn datasets torchtext \
     hydra-optuna-sweeper omegaconf joblib lightning
-
-# Installer PyTorch version 1.12.1 avec CUDA 11.3
-RUN /venv/bin/pip install --no-cache-dir torch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit==11.3
 
 # Installer les autres packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
