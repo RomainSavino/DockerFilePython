@@ -25,30 +25,35 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
 
 # Créer et activer l'environnement virtuel
 RUN python3.10 -m venv /venv
-RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
+ENV PATH="/venv/bin:$PATH"
 
 # Installer PyTorch version 1.12.1 avec CUDA 11.3
-RUN /venv/bin/pip install --no-cache-dir torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
+RUN pip install --no-cache-dir torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
 
 # Mettre à jour pip et installer les packages nécessaires
-RUN /venv/bin/pip install --upgrade pip setuptools wheel
-RUN /venv/bin/pip install "cython<3.0"
-RUN /venv/bin/pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install "cython<3.0"
+
+# Installer scikit-learn en dernier pour éviter les conflits de versions avec torch
+RUN pip install --no-cache-dir scikit-learn
+
+# Installer les autres packages nécessaires
+RUN pip install --no-cache-dir jupyterlab ipywidgets jupyter-dash \
     ipython ipykernel ptvsd tensorflow keras \
     xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
     joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
-    pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
+    pylint pyserial python-dateutil requests requests_html scikit-commpy scipy \
     seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile visdom xlrd xmltodict scikit-optimize \
     optuna hyperopt albumentations timm  optuna-distributed \
     kaleido geopandas gunicorn datasets torchtext \
     hydra-optuna-sweeper omegaconf joblib lightning
 
 # Installer les autres packages nécessaires
-RUN /venv/bin/pip install --no-cache-dir pre-commit \
+RUN pip install --no-cache-dir pre-commit \
     pyrootutils==1.0.4 \
     pytest \
     rootutils==1.0.7 \
     setuptools \
     sh==2.0.6 \
-    opencv-python \
+    opencv-python
