@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Met à jour les paquets existants et installe Firefox et ses dépendances
 RUN apt-get update && \
-    apt-get install -y firefox-esr \
+    apt-get install -y firefox \
                        x11-apps \
                        dbus-x11 \
                        xauth \
