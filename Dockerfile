@@ -72,4 +72,4 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     docker
 
 # Installer Apache Airflow
-RUN /venv/bin/pip install --no-cache-dir apache-airflow[postgres,celery,redis]==2.7.0
+RUN /venv/bin/pip install --no-cache-dir apache-airflow==2.10.0 -r requirements.txt
