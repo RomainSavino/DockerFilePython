@@ -10,6 +10,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Remplacer SH par BASH
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
   && dpkg-reconfigure --frontend noninteractive tzdata \
   && export LC_ALL="fr_FR.UTF-8" \
@@ -26,7 +27,6 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
     python3.10 python3.10-venv python3.10-dev \
     build-essential libffi-dev libssl-dev libyaml-dev && \
     rm -rf /var/lib/apt/lists/*
-
 # Créer et activer l'environnement virtuel
 RUN mkdir -p /venv
 RUN python3.10 -m venv /venv
@@ -34,8 +34,7 @@ RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
 # Mettre à jour pip et installer les packages nécessaires
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
-
-# Installer les dépendances Python supplémentaires
+RUN /venv/bin/pip install "cython<3.0"
 RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
     ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
     xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
@@ -46,6 +45,31 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
     lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
     datasets torchtext torchaudio accelerate torchsummary
+
+# Installer MLFlow
+RUN /venv/bin/pip install --no-cache-dir mlflow
+
+RUN /venv/bin/pip install --no-cache-dir pre-commit \
+    progressbar==2.5 \
+    pyrootutils==1.0.4 \
+    pytest \
+    rootutils==1.0.7 \
+    setuptools \
+    sh==2.0.6 \
+    cupy-cuda110==12.3.0 \
+    opencv-python \
+    lightning \
+    onnxruntime \
+    torchmetrics \
+    hydra-core \
+    hydra-colorlog \
+    hydra-optuna-sweeper \
+    omegaconf \
+    onnxruntime \
+    onnx \
+    pickle5 \
+    joblib \
+    docker
 
 # Installer Apache Airflow et les packages supplémentaires via pip
 RUN /venv/bin/pip install --no-cache-dir apache-airflow==2.10.0 \
