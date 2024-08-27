@@ -70,3 +70,6 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     pickle5 \
     joblib \
     docker
+
+# Installer Apache Airflow
+RUN /venv/bin/pip install --no-cache-dir apache-airflow[postgres,celery,redis]==2.7.0
