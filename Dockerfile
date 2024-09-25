@@ -16,13 +16,6 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
     locale-gen && \
     dpkg-reconfigure --frontend noninteractive locales
 
-# Free space based on https://github.com/actions/runner-images/issues/2840#issuecomment-790492173
-RUN rm -rf /usr/share/dotnet \
-    && rm -rf /opt/ghc \
-    && rm -rf "/usr/local/share/boost" \
-    && rm -rf "$AGENT_TOOLSDIRECTORY"
-
-
 # Installer Python 3.10 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && apt-get install -y --no-install-recommends \
@@ -40,6 +33,13 @@ RUN pip install --upgrade pip setuptools wheel
 # Installer PyTorch avec le support CUDA 11.8
 RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
+# Free space based on https://github.com/actions/runner-images/issues/2840#issuecomment-790492173
+RUN rm -rf /usr/share/dotnet \
+    && rm -rf /opt/ghc \
+    && rm -rf "/usr/local/share/boost" \
+    && rm -rf "$AGENT_TOOLSDIRECTORY" \
+    && rm -rf /opt/hostedtoolcache
+    
 # Installer les paquets dépendant de torch en spécifiant les versions compatibles
 RUN pip install --no-cache-dir \
     lightning==2.0.6 \
