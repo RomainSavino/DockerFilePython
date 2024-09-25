@@ -17,10 +17,11 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
     dpkg-reconfigure --frontend noninteractive locales
 
 # Free space based on https://github.com/actions/runner-images/issues/2840#issuecomment-790492173
-sudo rm -rf /usr/share/dotnet
-sudo rm -rf /opt/ghc
-sudo rm -rf "/usr/local/share/boost"
-sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+RUN rm -rf /usr/share/dotnet \
+    && rm -rf /opt/ghc \
+    && rm -rf "/usr/local/share/boost" \
+    && rm -rf "$AGENT_TOOLSDIRECTORY"
+
 
 # Installer Python 3.10 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa && \
