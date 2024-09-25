@@ -43,15 +43,15 @@ RUN pip install --no-cache-dir \
 
 # Installer les autres paquets nécessaires en évitant de réinstaller torch
 RUN pip install --no-cache-dir \
-    Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
-    ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask-restful flask-cors \
-    xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
+    haversine jupyterlab ipywidgets jupyter-dash \
+    ipython ipykernel ptvsd psycopg2-binary tensorflow keras  \
+    ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
     joblib kaleido lxml mako matplotlib opencv-python openpyxl pandas pillow psutil \
     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
     seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile uncompyle6 \
     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
-    lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas datasets torchsummary
+    optuna-distributed kaleido geopandas datasets torchsummary
 
 # Installer MLFlow
 RUN pip install --no-cache-dir mlflow
@@ -76,22 +76,6 @@ RUN pip install --no-cache-dir \
     joblib \
     docker
 
-# Installer Apache Airflow et les packages supplémentaires via pip
-RUN pip install --no-cache-dir \
-    apache-airflow==2.10.0 \
-    click>=8.0 \
-    jinja2>=2.11.3 \
-    keyring==10.1 \
-    PyGithub \
-    jsonpath_ng \
-    jsonschema \
-    pendulum \
-    pyyaml \
-    packaging \
-    rich \
-    rich_click \
-    semver \
-    tabulate
 
 # À la fin du build, imprimer la version de torch
 RUN python -c "import torch; print(f'Version de torch installée: {torch.__version__}')"
