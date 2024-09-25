@@ -36,39 +36,39 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # Installer tous les paquets nécessaires en une seule commande
-RUN pip install --no-cache-dir \
-    lightning==2.0.6 \
-    torchmetrics==1.0.0 \
-    torchtext==0.15.2 \
-    accelerate==0.21.0 \
-    transformers==4.31.0 \
-    haversine jupyterlab ipywidgets jupyter-dash \
-    ipython ipykernel ptvsd psycopg2-binary tensorflow keras  \
-    ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
-    dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
-    joblib kaleido lxml mako matplotlib opencv-python openpyxl pandas pillow psutil \
-    pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
-    seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile uncompyle6 \
-    visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
-    optuna-distributed kaleido geopandas datasets torchsummary \
-    mlflow \
-    pre-commit \
-    progressbar==2.5 \
-    pyrootutils==1.0.4 \
-    pytest \
-    rootutils==1.0.7 \
-    sh==2.0.6 \
-    cupy-cuda11x==12.3.0 \
-    opencv-python \
-    onnxruntime \
-    hydra-core \
-    hydra-colorlog \
-    hydra-optuna-sweeper \
-    omegaconf \
-    onnx \
-    pickle5 \
-    joblib \
-    docker
+# RUN pip install --no-cache-dir \
+#     lightning==2.0.6 \
+#     torchmetrics==1.0.0 \
+#     torchtext==0.15.2 \
+#     accelerate==0.21.0 \
+#     transformers==4.31.0 \
+#     haversine jupyterlab ipywidgets jupyter-dash \
+#     ipython ipykernel ptvsd psycopg2-binary tensorflow keras  \
+#     ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
+#     dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
+#     joblib kaleido lxml mako matplotlib opencv-python openpyxl pandas pillow psutil \
+#     pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
+#     seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile uncompyle6 \
+#     visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
+#     optuna-distributed kaleido geopandas datasets torchsummary \
+#     mlflow \
+#     pre-commit \
+#     progressbar==2.5 \
+#     pyrootutils==1.0.4 \
+#     pytest \
+#     rootutils==1.0.7 \
+#     sh==2.0.6 \
+#     cupy-cuda11x==12.3.0 \
+#     opencv-python \
+#     onnxruntime \
+#     hydra-core \
+#     hydra-colorlog \
+#     hydra-optuna-sweeper \
+#     omegaconf \
+#     onnx \
+#     pickle5 \
+#     joblib \
+#     docker
 
 # Supprimer les dossiers inutiles pour libérer de l'espace
 RUN rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost /opt/hostedtoolcache
