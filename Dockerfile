@@ -35,7 +35,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 # Installer PyTorch avec le support CUDA 11.8
 RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
-Installer tous les paquets nécessaires en une seule commande
+# Installer tous les paquets nécessaires en une seule commande
 RUN pip install --no-cache-dir \
     torchmetrics==1.0.0 \
     torchtext==0.15.2 \
