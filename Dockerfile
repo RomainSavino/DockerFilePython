@@ -1,5 +1,5 @@
-# Utiliser l'image de base NVIDIA CUDA 11.8.0 avec Ubuntu 20.04
-FROM nvidia/cuda:11.8.0-runtime-ubuntu20.04
+# Utiliser l'image de base NVIDIA CUDA 11.3.1 avec Ubuntu 20.04
+FROM nvidia/cuda:11.3.1-runtime-ubuntu20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/Paris
@@ -32,8 +32,8 @@ ENV PATH="/venv/bin:$PATH"
 # Mettre à jour pip et installer les packages de base
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# Installer PyTorch avec le support CUDA 11.8
-RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+# Installer PyTorch avec le support CUDA 11.3
+RUN pip install --no-cache-dir torch==1.10.0+cu113 torchvision==0.11.0+cu113 torchaudio==0.10.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
 
 # Supprimer les dossiers inutiles pour libérer de l'espace
 RUN rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost /opt/hostedtoolcache
