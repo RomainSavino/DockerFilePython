@@ -29,7 +29,7 @@ ENV PATH="/venv/bin:$PATH"
 
 # Installer PyTorch version 1.12.1 avec CUDA 11.3
 RUN pip install --no-cache-dir torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
-
+RUN pip install numpy<2
 RUN echo 'import torch; print(f"PyTorch version: {torch.__version__}"); print(f"CUDA version: {torch.version.cuda}"); print(f"CUDA available: {torch.cuda.is_available()}"); print(f"Number of GPUs: {torch.cuda.device_count()}")' > /check_gpu.py
 
 CMD ["python3.10", "/check_gpu.py"]
