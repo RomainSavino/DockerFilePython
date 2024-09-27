@@ -1,4 +1,4 @@
-# Utiliser l'image de base NVIDIA CUDA 11.4.3 avec Ubuntu 20.04
+# Utiliser l'image de base NVIDIA CUDA 11.3.1 avec Ubuntu 20.04
 FROM nvidia/cuda:11.3.1-runtime-ubuntu20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -27,9 +27,21 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
 RUN python3.10 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 
-# Installer PyTorch version 1.12.1 avec CUDA 11.3
+# Installer PyTorch version 1.11.0 avec CUDA 11.3
 RUN pip install --no-cache-dir torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
+
+# Installer numpy version <2
 RUN pip install "numpy<2"
+
+# Installer les bibliothèques Python supplémentaires avec des versions compatibles
+RUN pip install --no-cache-dir \
+    matplotlib==3.7.1 \
+    seaborn==0.12.2 \
+    pandas \
+    scikit-learn \
+    Pillow
+
+# Script de vérification
 RUN echo 'import torch; print(f"PyTorch version: {torch.__version__}"); print(f"CUDA version: {torch.version.cuda}"); print(f"CUDA available: {torch.cuda.is_available()}"); print(f"Number of GPUs: {torch.cuda.device_count()}")' > /check_gpu.py
 
 CMD ["python3.10", "/check_gpu.py"]
