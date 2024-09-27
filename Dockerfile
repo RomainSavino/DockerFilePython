@@ -5,16 +5,21 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Mettre à jour et installer les dépendances nécessaires
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
-    ffmpeg libsm6 libxext6 libopencv-dev pkg-config libboost-program-options-dev && \
-    rm -rf /var/lib/apt/lists/*
+    ffmpeg libsm6 libxext6 postgresql-client libopencv-dev pkg-config libboost-program-options-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# Configuration de la localisation
+# replace SH with BASH 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
-    && dpkg-reconfigure --frontend noninteractive tzdata \
-    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-    && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
-    && locale-gen \
-    && update-locale LANG=fr_FR.UTF-8
+  && dpkg-reconfigure --frontend noninteractive tzdata \
+  && export LC_ALL="fr_FR.UTF-8" \
+  && export LC_CTYPE="fr_FR.UTF-8" \
+  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+  && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+  && locale-gen \
+  && dpkg-reconfigure --frontend noninteractive locales
+RUN mkdir -p /run/sshd
 
 # Installer Python 3.10 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa && \
