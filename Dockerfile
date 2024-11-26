@@ -39,18 +39,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /opt/mcr
 
 # Télécharger et installer MATLAB Runtime R2020b
-
-# Télécharger et installer MATLAB Runtime R2020b
-
-RUN
- wget -O /tmp/MATLAB_Runtime_R2020b_glnxa64.zip 
-"https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/8/deployment_files/installer/complete/glnxa64/MATLAB_Runtime_R2020b_Update_8_glnxa64.zip"
- && 
-\
-
-    unzip /tmp/MATLAB_Runtime_R2020b_glnxa64.zip -d /tmp/matlab_runtime && 
-\
-
+RUN wget -O /tmp/MATLAB_Runtime_R2020b_glnxa64.zip "https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/8/deployment_files/installer/complete/glnxa64/MATLAB_Runtime_R2020b_Update_8_glnxa64.zip" && \
+    unzip /tmp/MATLAB_Runtime_R2020b_glnxa64.zip -d /tmp/matlab_runtime && \
     /tmp/matlab_runtime/install -mode silent -agreeToLicense yes -destinationFolder /opt/mcr
 
 # Définir les variables d'environnement pour MATLAB Runtime R2020b
