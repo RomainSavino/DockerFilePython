@@ -1,52 +1,56 @@
-# Utiliser l'image de base NVIDIA CUDA 11.3.1 avec Ubuntu 20.04
-FROM nvidia/cuda:11.3.1-runtime-ubuntu20.04
-ENV DEBIAN_FRONTEND=noninteractive
+# Utiliser l'image de base Ubuntu 20.04
+FROM ubuntu:20.04
 
-# Mettre à jour et installer les dépendances nécessaires
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    software-properties-common tzdata locales gcc make git openssh-server curl iproute2 tshark \
-    ffmpeg libsm6 libxext6 postgresql-client libopencv-dev pkg-config libboost-program-options-dev && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm /bin/sh && ln -s /bin/bash /bin/sh
+# Installer les dépendances nécessaires
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    libgomp1 \
+    libasound2 \
+    libatk1.0-0 \
+    libc6 \
+    libcairo2 \
+    libdbus-1-3 \
+    libfontconfig1 \
+    libfreetype6 \
+    libgcc1 \
+    libgdk-pixbuf2.0-0 \
+    libglib2.0-0 \
+    libgtk2.0-0 \
+    libnspr4 \
+    libpango-1.0-0 \
+    libstdc++6 \
+    libx11-6 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxft2 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxtst6 \
+    zlib1g \
+    libnss3 \
+    libssl1.1
 
-# replace SH with BASH 
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
-  && dpkg-reconfigure --frontend noninteractive tzdata \
-  && export LC_ALL="fr_FR.UTF-8" \
-  && export LC_CTYPE="fr_FR.UTF-8" \
-  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-  && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
-  && locale-gen \
-  && dpkg-reconfigure --frontend noninteractive locales
-RUN mkdir -p /run/sshd
+# Définir le dossier de travail pour MATLAB Runtime
+WORKDIR /opt/mcr
 
-# Installer Python 3.10 et ses dépendances
-RUN add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && apt-get install -y --no-install-recommends \
-    python3.10 python3.10-venv python3.10-dev \
-    build-essential libffi-dev libssl-dev libyaml-dev && \
-    rm -rf /var/lib/apt/lists/*
+# Télécharger et installer MATLAB Runtime R2020b
+# Remplacez <MATLAB_Runtime_Download_URL> par le lien de téléchargement approprié depuis le site de MathWorks
+RUN wget -O /tmp/MATLAB_Runtime_R2020b_glnxa64.zip "https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/8/deployment_files/installer/complete/glnxa64/MATLAB_Runtime_R2020b_Update_8_glnxa64.zip
+" && \
+    unzip /tmp/MATLAB_Runtime_R2020b_glnxa64.zip -d /tmp/matlab_runtime && \
+    /tmp/matlab_runtime/install -mode silent -agreeToLicense yes -destinationFolder /opt/mcr
 
-# Créer et activer l'environnement virtuel
-RUN python3.10 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
+# Définir les variables d'environnement pour MATLAB Runtime R2020b
+ENV LD_LIBRARY_PATH=/opt/mcr/v98/runtime/glnxa64:/opt/mcr/v98/bin/glnxa64:/opt/mcr/v98/sys/os/glnxa64:/opt/mcr/v98/extern/bin/glnxa64
+ENV XAPPLRESDIR=/opt/mcr/v98/X11/app-defaults
 
-# Installer PyTorch version 1.11.0 avec CUDA 11.3
-RUN pip install --no-cache-dir torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
+# Définir le dossier de travail pour l'exécutable
+WORKDIR /app
 
-# Installer numpy version <2
-RUN pip install "numpy<2"
-
-# Installer les bibliothèques Python supplémentaires avec des versions compatibles
-RUN pip install --no-cache-dir \
-    matplotlib==3.7.1 \
-    seaborn==0.12.2 \
-    pandas \
-    scikit-learn \
-    Pillow
-
-# Script de vérification
-RUN echo 'import torch; print(f"PyTorch version: {torch.__version__}"); print(f"CUDA version: {torch.version.cuda}"); print(f"CUDA available: {torch.cuda.is_available()}"); print(f"Number of GPUs: {torch.cuda.device_count()}")' > /check_gpu.py
-
-CMD ["python3.10", "/check_gpu.py"]
+# Définir l'entrée par défaut (modifiable lors de l'exécution)
+ENTRYPOINT ["./votre_executable"]
