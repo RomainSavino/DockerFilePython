@@ -56,7 +56,7 @@ RUN python3.10 -m pip install --upgrade pip
 RUN python3.10 -m pip install --no-cache-dir \
     pyinstaller \
     pillow \
-    PIL \
+    Pillow \
     && ln -s /usr/local/lib/libpython3.10.so /usr/lib/libpython3.10.so
 
 # Créer un répertoire de travail pour l'application
