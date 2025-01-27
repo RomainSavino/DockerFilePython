@@ -1,27 +1,57 @@
-FROM centos:7.9.2009
+# Utiliser Debian 10 (Buster) comme image de base
+FROM debian:10
 
-# Patcher les fichiers .repo pour pointer vers vault.centos.org
-RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo && \
-    sed -i 's|^#baseurl=|baseurl=|g' /etc/yum.repos.d/CentOS-Base.repo && \
-    sed -i 's|mirror.centos.org/centos/$releasever|vault.centos.org/7.9.2009|g' /etc/yum.repos.d/CentOS-Base.repo
+# Définir des variables d'environnement pour éviter les interactions lors de l'installation
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Mise à jour + installation
-RUN yum -y update && yum -y install epel-release && yum clean all
+# Mettre à jour les paquets et installer les dépendances nécessaires
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    wget \
+    libssl-dev \
+    zlib1g-dev \
+    libncurses5-dev \
+    libncursesw5-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libgdbm-dev \
+    libdb5.3-dev \
+    libbz2-dev \
+    libexpat1-dev \
+    liblzma-dev \
+    tk-dev \
+    libffi-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libx11-dev \
+    libgtk-3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Ensuite, tu peux installer tes paquets comme Python 3, etc.
-RUN yum -y groupinstall "Development Tools" && \
-    yum -y install python36 python36-devel python36-setuptools python36-tkinter \
-                   qt5-qtbase-devel git parted fdisk lsof xauth xorg-x11-server-Xorg && \
-    yum clean all
+# Installer wget et autres outils nécessaires pour télécharger Python
+RUN apt-get update && apt-get install -y wget curl
 
-# Liens symboliques
-RUN ln -s /usr/bin/python3.6 /usr/bin/python3 || true && \
-    ln -s /usr/bin/pip3.6 /usr/bin/pip3 || true && \
-    pip3 install --upgrade pip
+# Télécharger et compiler Python 3.10. Vous pouvez ajuster la version si nécessaire
+ENV PYTHON_VERSION=3.10.12
+RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
+    && tar -xzf Python-${PYTHON_VERSION}.tgz \
+    && cd Python-${PYTHON_VERSION} \
+    && ./configure --enable-optimizations \
+    && make -j$(nproc) \
+    && make altinstall \
+    && cd .. \
+    && rm -rf Python-${PYTHON_VERSION} Python-${PYTHON_VERSION}.tgz
 
-# Installer les librairies Python
-RUN pip3 install --no-cache-dir numpy pandas matplotlib seaborn scikit-learn requests \
-    pyinstaller openpyxl pyqt5
+# Créer un lien symbolique pour python3.10
+RUN ln -s /usr/local/bin/python3.10 /usr/bin/python3.10
 
+# Mettre à jour pip
+RUN python3.10 -m pip install --upgrade pip
+
+# Installer les paquets Python nécessaires
+RUN python3.10 -m pip install --no-cache-dir \
+    pyinstaller \
+    pillow \
+    tkinter
+
+# Créer un répertoire de travail pour l'application
 WORKDIR /app
-CMD ["python3"]
