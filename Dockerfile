@@ -56,8 +56,7 @@ RUN python3.10 -m pip install --upgrade pip
 RUN python3.10 -m pip install --no-cache-dir \
     pyinstaller \
     pillow \
-    # Si vous avez vraiment besoin de PIL, vous pouvez l'installer via pip, mais Pillow est généralement suffisant
-    # pillow est une implémentation moderne de PIL
+    PIL \
     && ln -s /usr/local/lib/libpython3.10.so /usr/lib/libpython3.10.so
 
 # Créer un répertoire de travail pour l'application
