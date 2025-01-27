@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     libffi-dev \
     libjpeg-dev \
     libpng-dev \
+    python3-tk \
     libx11-dev \
     libgtk-3-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -50,8 +51,7 @@ RUN python3.10 -m pip install --upgrade pip
 # Installer les paquets Python nécessaires
 RUN python3.10 -m pip install --no-cache-dir \
     pyinstaller \
-    pillow \
-    tkinter
-
+    pillow 
+    
 # Créer un répertoire de travail pour l'application
 WORKDIR /app
