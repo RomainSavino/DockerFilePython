@@ -91,7 +91,7 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     hydra-colorlog \
     hydra-optuna-sweeper \
     omegaconf \
-    onnxruntime \
+    onnxruntime==1.18.0 \
     onnx \
     pickle5 \
     joblib \
