@@ -99,7 +99,7 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     onnx-simplifier \
     onnx \
     onnxconverter-common \
-    onnxruntime-tools==1.18.0 \
+    onnxruntime-tools \
     poethepoet \
     pre-commit \
     protobuf \
