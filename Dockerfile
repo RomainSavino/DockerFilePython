@@ -113,7 +113,7 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     jupyter \
     lakefs \
     neural-compressor \
-    nncf \
+    nncf
 
 # Installation de Grafana (si nécessaire, configuration supplémentaire peut être ajoutée ici)
 
