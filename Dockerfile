@@ -95,7 +95,25 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     onnx \
     pickle5 \
     joblib \
-    openvino-dev==2024.5.0
+    openvino-dev==2024.5.0 \
+    onnx-simplifier \
+    onnx \
+    onnxconverter-common \
+    onnxruntime-tools==1.18.0 \
+    poethepoet \
+    pre-commit \
+    protobuf \
+    ruff \
+    scikit-image \
+    thop \
+    torch-pruning \
+    torch-summary \
+    cupy-cuda12x \
+    deepsparse \
+    jupyter \
+    lakefs \
+    neural-compressor \
+    nncf \
 
 # Installation de Grafana (si nécessaire, configuration supplémentaire peut être ajoutée ici)
 
