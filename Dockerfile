@@ -56,14 +56,18 @@ RUN mkdir -p /venv
 RUN python3.9 -m venv /venv
 RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
-# Mettre à jour pip et installer les packages nécessaires
-RUN /venv/bin/pip install --upgrade pip setuptools wheel
+# Mettre à jour pip et installer une version spécifique de setuptools
+RUN /venv/bin/pip install --upgrade pip
+RUN /venv/bin/pip install setuptools==65.5.0
+
+# Installer les packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir \
     cloudpickle==3.1.1 \
     cycler==0.12.1 \
     Farama-Notifications==0.0.4 \
     filelock==3.17.0 \
     fsspec==2024.12.0 \
+    gym==0.21.0 \
     gymnasium==1.0.0 \
     importlib-metadata==4.13.0 \
     Jinja2==3.1.5 \
@@ -93,9 +97,6 @@ RUN /venv/bin/pip install --no-cache-dir \
     onnx-simplifier \
     onnxconverter-common \
     onnxruntime-tools
-
-# Installer gym directement depuis GitHub
-RUN /venv/bin/pip install git+https://github.com/openai/gym.git@0.21.0#egg=gym
 
 # Nettoyage final
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
