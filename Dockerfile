@@ -22,6 +22,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     libopencv-dev \
     pkg-config \
     libboost-program-options-dev \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # replace SH with BASH
