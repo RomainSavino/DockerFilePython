@@ -36,20 +36,13 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
     && dpkg-reconfigure --frontend noninteractive locales
 RUN mkdir -p /run/sshd
 
-# Ajouter le dépôt Grafana et installer Grafana
-RUN wget -q -O - https://packages.grafana.com/gpg.key | apt-key add - \
-    && echo "deb https://packages.grafana.com/oss/deb stable main" | tee /etc/apt/sources.list.d/grafana.list \
-    && apt-get update \
-    && apt-get install -y grafana \
-    && rm -rf /var/lib/apt/lists/*
-
-# Installer Python 3.10 et ses dépendances
+# Installer Python 3.9 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        python3.10 \
-        python3.10-venv \
-        python3.10-dev \
+        python3.9 \
+        python3.9-venv \
+        python3.9-dev \
         build-essential \
         libffi-dev \
         libssl-dev \
@@ -58,7 +51,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa \
 
 # Créer et activer l'environnement virtuel
 RUN mkdir -p /venv
-RUN python3.10 -m venv /venv
+RUN python3.9 -m venv /venv
 RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
 # Mettre à jour pip et installer les packages nécessaires
