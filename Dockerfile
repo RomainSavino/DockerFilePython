@@ -56,9 +56,8 @@ RUN mkdir -p /venv
 RUN python3.9 -m venv /venv
 RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
-# Mettre à jour pip et installer une version spécifique de setuptools
-RUN /venv/bin/pip install --upgrade pip
-RUN /venv/bin/pip install setuptools==65.5.0
+# Mettre à jour pip, setuptools et wheel avec des versions spécifiques
+RUN /venv/bin/pip install --upgrade pip==21.3.1 setuptools==65.5.0 wheel==0.38.0
 
 # Installer les packages nécessaires
 RUN /venv/bin/pip install --no-cache-dir \
