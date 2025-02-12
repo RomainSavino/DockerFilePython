@@ -24,13 +24,13 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     libboost-program-options-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# replace SH with BASH 
+# replace SH with BASH
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
     && dpkg-reconfigure --frontend noninteractive tzdata \
     && export LC_ALL="fr_FR.UTF-8" \
-  && export LC_CTYPE="fr_FR.UTF-8" \
-  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && export LC_CTYPE="fr_FR.UTF-8" \
+    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen \
     && dpkg-reconfigure --frontend noninteractive locales
@@ -64,16 +64,116 @@ RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 # Mettre à jour pip et installer les packages nécessaires
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
 RUN /venv/bin/pip install "cython<3.0"
-RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
-        ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
-        xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
-        dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
-        joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
-        pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
-        seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision uncompyle6 \
-        visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
-        lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
-        datasets torchtext torchaudio accelerate torchsummary mlflow
+RUN /venv/bin/pip install --no-cache-dir \
+        cloudpickle==3.1.1 \
+        cycler==0.12.1 \
+        Farama-Notifications==0.0.4 \
+        filelock==3.17.0 \
+        fsspec==2024.12.0 \
+        gym==0.21.0 \
+        gymnasium==1.0.0 \
+        importlib-metadata==4.13.0 \
+        Jinja2==3.1.5 \
+        kiwisolver==1.4.7 \
+        MarkupSafe==3.0.2 \
+        matplotlib==3.4.0 \
+        mpmath==1.3.0 \
+        networkx==3.2.1 \
+        numpy==1.24.4 \
+        opencv-python==4.11.0.86 \
+        pandas==1.3.0 \
+        pillow==11.1.0 \
+        pygame==2.6.1 \
+        pyparsing==3.2.1 \
+        python-dateutil==2.9.0.post0 \
+        pytz==2024.2 \
+        scipy==1.9.0 \
+        six==1.17.0 \
+        stable_baselines3==2.4.1 \
+        sympy==1.13.1 \
+        torch==2.5.1 \
+        typing_extensions==4.12.2 \
+        zipp==3.21.0 \
+        onnx \
+        Flask \
+        Folium \
+        haversine \
+        jupyterlab \
+        ipywidgets \
+        jupyter-dash \
+        ipython \
+        ipykernel \
+        ptvsd \
+        psycopg2-binary \
+        tensorflow \
+        keras \
+        flask \
+        flask-restful \
+        flask-cors \
+        xgboost \
+        ahrs \
+        alembic \
+        argparse \
+        beautifulsoup4 \
+        dash \
+        dash-bootstrap-components \
+        dash_daq \
+        datetime \
+        docopt \
+        dpkt \
+        glob2 \
+        gpsd-py3 \
+        gpxpy \
+        graphviz \
+        gunicorn \
+        h5py \
+        ipympl \
+        joblib \
+        kaleido \
+        lxml \
+        setuptools \
+        mako \
+        opencv-python \
+        openpyxl \
+        pandas \
+        psutil \
+        pylint \
+        pyserial \
+        requests \
+        requests_html \
+        scikit-commpy \
+        scikit-learn \
+        seaborn \
+        sqlalchemy==1.4.1 \
+        tabulate \
+        tensorboard \
+        tifffile \
+        torch \
+        torchvision \
+        uncompyle6 \
+        visdom \
+        xlrd \
+        xmltodict \
+        scikit-optimize \
+        optuna \
+        hyperopt \
+        bashplotlib \
+        albumentations \
+        timm \
+        lightgbm \
+        ultralytics \
+        grad-cam \
+        optuna-distributed \
+        kaleido \
+        geopandas \
+        gunicorn \
+        transformers \
+        datasets \
+        torchtext \
+        torchaudio \
+        accelerate \
+        torchsummary \
+        mlflow
 
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
     progressbar==2.5 \
@@ -83,7 +183,6 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     setuptools \
     sh==2.0.6 \
     cupy-cuda110==12.3.0 \
-    opencv-python \
     lightning \
     onnxruntime \
     torchmetrics \
@@ -97,11 +196,9 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     joblib \
     openvino-dev==2024.5.0 \
     onnx-simplifier \
-    onnx \
     onnxconverter-common \
     onnxruntime-tools \
     poethepoet \
-    pre-commit \
     protobuf \
     ruff \
     scikit-image \
