@@ -95,7 +95,8 @@ RUN /venv/bin/pip install --no-cache-dir \
     onnx \
     onnx-simplifier \
     onnxconverter-common \
-    onnxruntime-tools
+    onnxruntime-tools \
+    pyglet
 
 # Nettoyage final
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
