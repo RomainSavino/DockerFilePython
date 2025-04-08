@@ -90,7 +90,24 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     pickle5 \
     joblib \
     openvino-dev==2024.5.0 \
-    mlflow-export-import
+    mlflow-export-import \
+    onnx-simplifier \
+    onnxconverter-common \
+    onnxruntime-tools \
+    poethepoet \
+    pre-commit \
+    protobuf \
+    ruff \
+    scikit-image \
+    thop \
+    torch-pruning \
+    torch-summary \
+    cupy-cuda12x \
+    deepsparse \
+    jupyter \
+    lakefs \
+    neural-compressor \
+    nncf
 
 
 # Nettoyage final
