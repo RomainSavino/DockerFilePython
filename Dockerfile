@@ -102,7 +102,6 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     thop \
     torch-pruning \
     torch-summary \
-    deepsparse==1.8.0 \    
     jupyter \
     lakefs \
     neural-compressor \
