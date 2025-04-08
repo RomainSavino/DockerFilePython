@@ -86,7 +86,7 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     hydra-optuna-sweeper \
     omegaconf \
     onnxruntime==1.18.0 \
-    onnx \
+    onnx==1.16.0 \
     pickle5 \
     joblib \
     openvino-dev==2024.5.0 \
