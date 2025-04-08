@@ -75,8 +75,8 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     pytest \
     rootutils==1.0.7 \
     setuptools \
+    cupy-cuda110==12.3.0 \
     sh==2.0.6 \
-    cupy-cuda12x \
     opencv-python \
     lightning \
     onnxruntime \
