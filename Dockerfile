@@ -1,9 +1,9 @@
-# Utiliser l'image de base NVIDIA CUDA 12.4 (avec toolkit) et Ubuntu 22.04
-FROM nvidia/cuda:12.4.0-devel-ubuntu22.04
+# Utiliser l'image de base NVIDIA CUDA 12.4 avec Ubuntu 22.04
+FROM nvidia/cuda:12.4.0-base-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Mettre à jour et installer les dépendances système
+# Mettre à jour et installer les dépendances nécessaires
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common \
     tzdata \
@@ -22,68 +22,54 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     libopencv-dev \
     pkg-config \
     libboost-program-options-dev \
- && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
-# remplacer /bin/sh par bash, config timezone & locales
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh \
- && ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
- && dpkg-reconfigure --frontend noninteractive tzdata \
- && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
- && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
- && locale-gen \
- && dpkg-reconfigure --frontend noninteractive locales \
- && export LC_ALL="fr_FR.UTF-8" \
- && export LC_CTYPE="fr_FR.UTF-8"
-
+# replace SH with BASH 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
+    && dpkg-reconfigure --frontend noninteractive tzdata \
+    && export LC_ALL="fr_FR.UTF-8" \
+  && export LC_CTYPE="fr_FR.UTF-8" \
+  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen \
+    && dpkg-reconfigure --frontend noninteractive locales
 RUN mkdir -p /run/sshd
+
 
 # Installer Python 3.10 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
-      python3.10 \
-      python3.10-venv \
-      python3.10-dev \
-      build-essential \
-      libffi-dev \
-      libssl-dev \
-      libyaml-dev \
- && rm -rf /var/lib/apt/lists/*
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        python3.10 \
+        python3.10-venv \
+        python3.10-dev \
+        build-essential \
+        libffi-dev \
+        libssl-dev \
+        libyaml-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Créer et activer l'environnement virtuel
-RUN mkdir -p /venv \
- && python3.10 -m venv /venv \
- && echo "PATH=/venv/bin:\$PATH" > /etc/profile.d/python_venv.sh
+RUN mkdir -p /venv
+RUN python3.10 -m venv /venv
+RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
 
-# Mettre à jour pip et setuptools
+# Mettre à jour pip et installer les packages nécessaires
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
-
-# Installer Cython
 RUN /venv/bin/pip install "cython<3.0"
+RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywidgets jupyter-dash \
+        ipython ipykernel ptvsd psycopg2-binary tensorflow keras flask flask-restful flask-cors \
+        xgboost ahrs alembic argparse beautifulsoup4 dash dash-bootstrap-components \
+        dash_daq datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz gunicorn gym h5py ipympl \
+        joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
+        pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
+        seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision uncompyle6 \
+        visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
+        lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
+        datasets torchtext torchaudio accelerate torchsummary mlflow
 
-# Installer la majorité des packages Python, mise à jour de CuPy et ajout de cuDF
-RUN /venv/bin/pip install --no-cache-dir \
-        Flask flask Folium haversine jupyterlab ipywidgets jupyter-dash \
-        ipython ipykernel ptvsd psycopg2-binary tensorflow keras \
-        flask-restful flask-cors xgboost ahrs alembic argparse \
-        beautifulsoup4 dash dash-bootstrap-components dash_daq \
-        datetime docopt dpkt glob2 gpsd-py3 gpxpy graphviz \
-        gunicorn gym h5py ipympl joblib kaleido lxml setuptools mako \
-        matplotlib opencv-python openpyxl pandas pillow psutil \
-        pylint pyserial python-dateutil requests requests_html \
-        scikit-commpy scikit-learn scipy seaborn \
-        sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision \
-        uncompyle6 visdom xlrd xmltodict scikit-optimize optuna hyperopt \
-        bashplotlib albumentations timm lightgbm ultralytics grad-cam \
-        optuna-distributed kaleido geopandas gunicorn transformers  datasets \
-        torchtext torchaudio accelerate torchsummary mlflow \
-        && /venv/bin/pip install --no-cache-dir \
-        cupy-cuda12x cudf-cu12 cuml-cu12 \
-        --extra-index-url=https://pypi.nvidia.com
-        
-# Installer les outils Python complémentaires
-RUN /venv/bin/pip install --no-cache-dir \
-    pre-commit \
+RUN /venv/bin/pip install --no-cache-dir pre-commit \
     progressbar==2.5 \
     pyrootutils==1.0.4 \
     pytest \
@@ -92,6 +78,7 @@ RUN /venv/bin/pip install --no-cache-dir \
     sh==2.0.6 \
     opencv-python \
     lightning \
+    onnxruntime \
     torchmetrics \
     hydra-core \
     hydra-colorlog \
@@ -117,10 +104,16 @@ RUN /venv/bin/pip install --no-cache-dir \
     jupyter \
     lakefs \
     neural-compressor \
-    nncf
+    nncf \
+    cupy-cuda12x==13.3.0 \
+    cudf-cu12==24
+
 
 # Nettoyage final
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Optionnel : Ajouter des fichiers ou configurations supplémentaires si nécessaire
+# COPY your_files /workspace/
 
 # Point d'entrée par défaut
 CMD ["/bin/bash"]
