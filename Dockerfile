@@ -106,7 +106,7 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     neural-compressor \
     nncf \
     cupy-cuda12x==13.3.0 \
-    cudf-cu12==24
+    cudf-cu12==24.10.1
 
 
 # Nettoyage final
