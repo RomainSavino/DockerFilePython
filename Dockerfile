@@ -77,10 +77,10 @@ RUN /venv/bin/pip install --no-cache-dir \
         bashplotlib albumentations timm lightgbm ultralytics grad-cam \
         optuna-distributed kaleido geopandas gunicorn transformers  datasets \
         torchtext torchaudio accelerate torchsummary mlflow \
-        cupy-cuda12x==13.3.0 \
-        cudf-cu12==24 \
-        --constraint https://rapids.ai/files/rapidsai/constraints-cuda12.txt
-
+        && /venv/bin/pip install --no-cache-dir \
+        cupy-cuda12x cudf-cu12 cuml-cu12 \
+        --extra-index-url=https://pypi.nvidia.com
+        
 # Installer les outils Python complémentaires
 RUN /venv/bin/pip install --no-cache-dir \
     pre-commit \
