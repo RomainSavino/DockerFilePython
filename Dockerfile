@@ -67,7 +67,7 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
         seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision uncompyle6 \
         visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
         lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
-        datasets torchtext torchaudio accelerate torchsummary mlflow
+        datasets torchtext torchaudio accelerate torchsummary mlflow streamlit
 
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
     progressbar==2.5 \
