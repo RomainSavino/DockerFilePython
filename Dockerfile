@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libpng-dev \
     libjpeg-dev \
+    curl \ # Ajouter curl pour télécharger get-pip.py
     && apt-get clean
 
 # Install pip for Python 3.9
