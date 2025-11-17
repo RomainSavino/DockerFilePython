@@ -1,5 +1,6 @@
 # Base image
 FROM nvidia/cuda:12.2.0-base-ubuntu20.04
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Set the working directory
 WORKDIR /app
