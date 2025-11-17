@@ -42,7 +42,7 @@ RUN python3.9 -m pip install \
     Farama-Notifications==0.0.4 \
     filelock==3.17.0 \
     fsspec==2024.12.0 \
-    gym==0.21.0 \
+    gym==0.25.2 \
     gymnasium==1.0.0 \
     importlib-metadata==4.13.0 \
     Jinja2==3.1.5 \
@@ -71,6 +71,7 @@ RUN python3.9 -m pip install \
     ttkthemes \
     PyQt5==5.15.7 \
     && pip install --no-cache-dir -U matplotlib
+
 
 # Install TKinter and other GUI libraries
 RUN apt-get install -y python3.9-tk
