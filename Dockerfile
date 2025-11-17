@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libpng-dev \
     libjpeg-dev \
-    curl \ # Ajouter curl pour télécharger get-pip.py
+    curl \
     && apt-get clean
 
 # Install pip for Python 3.9
@@ -66,7 +66,6 @@ RUN python3.9 -m pip install \
     torch==2.5.1 \
     typing_extensions==4.12.2 \
     zipp==3.21.0 \
-    matplotlib==3.4.0 \
     basemap \
     rasterio \
     ttkthemes \
