@@ -2,7 +2,7 @@ FROM nvidia/cuda:12.2.0-base-ubuntu20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install necessary dependencies
+# Mise à jour et installation des dépendances de base
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common \
     tzdata \
@@ -25,8 +25,13 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Replace SH with BASH
+# Activer le dépôt universe (pour libgeos-dev, libproj-dev, etc.)
+RUN add-apt-repository -y universe && apt-get update && rm -rf /var/lib/apt/lists/*
+
+# Remplacer sh par bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+# Configuration du fuseau horaire et des locales
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
     && dpkg-reconfigure --frontend noninteractive tzdata \
     && export LC_ALL="fr_FR.UTF-8" \
@@ -38,29 +43,38 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
 
 RUN mkdir -p /run/sshd
 
-# Install Python 3.9 and its dependencies
-RUN add-apt-repository ppa:deadsnakes/ppa \
+# Installer Python 3.9 depuis deadsnakes, incluant Tkinter
+RUN add-apt-repository -y ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         python3.9 \
         python3.9-venv \
         python3.9-dev \
+        python3.9-tk \
         build-essential \
         libffi-dev \
         libssl-dev \
         libyaml-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Create and activate the virtual environment
-RUN mkdir -p /venv
-RUN python3.9 -m venv /venv
+# Dépendances natives pour Basemap (GEOS, PROJ)
+RUN apt-get update && apt-get install -y libgeos-dev libproj-dev && rm -rf /var/lib/apt/lists/*
 
-# Ensure pip is installed and up-to-date
-RUN /venv/bin/python3.9 -m ensurepip --upgrade
-RUN /venv/bin/python3.9 -m pip install --upgrade pip==21.3.1 setuptools==65.5.0 wheel==0.38.0
+# Créer et activer l’environnement virtuel
+RUN mkdir -p /venv && python3.9 -m venv /venv
 
-# Install necessary Python packages
+# Installer/mettre à jour pip, setuptools, wheel
+RUN /venv/bin/python3.9 -m ensurepip --upgrade \
+    && /venv/bin/python3.9 -m pip install --upgrade pip==21.3.1 setuptools==65.5.0 wheel==0.38.0
+
+# Ajouter venv au PATH
 ENV PATH="/venv/bin:$PATH"
+
+# Paramètres pour rendu headless (évite les erreurs GUI)
+ENV MPLBACKEND=Agg
+ENV QT_QPA_PLATFORM=offscreen
+
+# Installer les paquets Python nécessaires
 RUN pip install --no-cache-dir \
     cloudpickle==3.1.1 \
     cycler==0.12.1 \
@@ -100,15 +114,9 @@ RUN pip install --no-cache-dir \
     basemap \
     rasterio \
     ttkthemes \
-    PyQt5==5.15.7 
+    PyQt5==5.15.7
 
-# Install Tkinter and other GUI libraries
-RUN apt-get update && apt-get install -y python3.9-tk && rm -rf /var/lib/apt/lists/*
-
-# Install Basemap dependencies
-RUN apt-get install -y libgeos-dev libproj-dev
-
-# Final cleanup
+# Nettoyage final
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 8888
