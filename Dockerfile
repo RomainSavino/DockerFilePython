@@ -74,7 +74,7 @@ RUN pip install --no-cache-dir \
     jupyterlab \
     kiwisolver==1.4.7 \
     MarkupSafe==3.0.2 \
-    matplotlib==3.4.0 \
+    matplotlib==3.8.4 \
     mpmath==1.3.0 \
     networkx==3.2.1 \
     numpy==1.24.4 \
@@ -100,8 +100,7 @@ RUN pip install --no-cache-dir \
     basemap \
     rasterio \
     ttkthemes \
-    PyQt5==5.15.7 \
-    && pip install --no-cache-dir -U matplotlib
+    PyQt5==5.15.7 
 
 # Install Tkinter and other GUI libraries
 RUN apt-get install -y python3.9-tk
