@@ -103,7 +103,7 @@ RUN pip install --no-cache-dir \
     PyQt5==5.15.7 
 
 # Install Tkinter and other GUI libraries
-RUN apt-get install -y python3.9-tk
+RUN apt-get update && apt-get install -y python3.9-tk && rm -rf /var/lib/apt/lists/*
 
 # Install Basemap dependencies
 RUN apt-get install -y libgeos-dev libproj-dev
