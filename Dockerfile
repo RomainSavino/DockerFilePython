@@ -93,7 +93,7 @@ RUN pip install --no-cache-dir \
     networkx==3.2.1 \
     numpy==1.24.4 \
     opencv-python==4.11.0.86 \
-    pandas==1.3.0 \
+    pandas\
     pillow==11.1.0 \
     pygame==2.6.1 \
     pyparsing==3.2.1 \
