@@ -67,8 +67,7 @@ RUN pip install --no-cache-dir \
     Farama-Notifications==0.0.4 \
     filelock==3.17.0 \
     fsspec==2024.12.0 \
-    gym==0.21.0 \
-    gymnasium==1.0.0 \
+    gymnasium==0.29.1 \
     importlib-metadata==4.13.0 \
     Jinja2==3.1.5 \
     jupyterlab \
