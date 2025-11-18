@@ -57,7 +57,7 @@ RUN python3.9 -m venv /venv
 
 # Ensure pip is installed and up-to-date
 RUN /venv/bin/python3.9 -m ensurepip --upgrade
-RUN /venv/bin/python3.9 -m pip install --upgrade pip
+RUN /venv/bin/python3.9 -m pip install --upgrade pip==21.3.1 setuptools==65.5.0 wheel==0.38.0
 
 # Install necessary Python packages
 ENV PATH="/venv/bin:$PATH"
@@ -67,7 +67,8 @@ RUN pip install --no-cache-dir \
     Farama-Notifications==0.0.4 \
     filelock==3.17.0 \
     fsspec==2024.12.0 \
-    gymnasium==0.29.1 \
+    gym==0.21.0 \
+    gymnasium==1.0.0 \
     importlib-metadata==4.13.0 \
     Jinja2==3.1.5 \
     jupyterlab \
