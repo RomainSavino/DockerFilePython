@@ -114,7 +114,8 @@ RUN pip install --no-cache-dir \
     basemap \
     rasterio \
     ttkthemes \
-    PyQt5==5.15.7
+    PyQt5==5.15.7 \
+    h5py
 
 # Nettoyage final
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
