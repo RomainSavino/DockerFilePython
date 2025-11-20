@@ -115,7 +115,8 @@ RUN pip install --no-cache-dir \
     rasterio \
     ttkthemes \
     PyQt5==5.15.7 \
-    h5py
+    h5py \
+    tensorboard
 
 # Nettoyage final
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
