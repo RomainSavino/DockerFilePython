@@ -76,37 +76,37 @@ ENV QT_QPA_PLATFORM=offscreen
 
 # Installer les paquets Python nécessaires pour RL et MLflow
 RUN pip install --no-cache-dir \
-    cloudpickle \
-    cycler \
-    Farama-Notifications \
-    filelock \
-    fsspec \
-    gym \
-    gymnasium \
-    importlib-metadata \
-    Jinja2 \
+    cloudpickle==3.1.1 \
+    cycler==0.12.1 \
+    Farama-Notifications==0.0.4 \
+    filelock==3.17.0 \
+    fsspec==2024.12.0 \
+    gym==0.21.0 \
+    gymnasium==1.0.0 \
+    importlib-metadata==4.13.0 \
+    Jinja2==3.1.5 \
     jupyterlab \
-    kiwisolver \
-    MarkupSafe \
-    matplotlib \
-    mpmath \
-    networkx \
-    numpy \
-    opencv-python \
+    kiwisolver==1.4.7 \
+    MarkupSafe==3.0.2 \
+    matplotlib==3.8.4 \
+    mpmath==1.3.0 \
+    networkx==3.2.1 \
+    numpy==1.24.4 \
+    opencv-python==4.11.0.86 \
     pandas \
-    pillow \
-    pygame \
-    pyparsing \
-    python-dateutil \
-    pytz \
-    scipy \
-    six \
-    stable-baselines3 \
-    sympy \
-    torch \
-    typing_extensions \
-    zipp \
-    mlflow \
+    pillow==11.1.0 \
+    pygame==2.6.1 \
+    pyparsing==3.2.1 \
+    python-dateutil==2.9.0.post0 \
+    pytz==2024.2 \
+    scipy==1.9.0 \
+    six==1.17.0 \
+    stable_baselines3==2.4.1 \
+    sympy==1.13.1 \
+    torch==2.5.1 \
+    typing_extensions==4.12.2 \
+    zipp==3.21.0 \
+    mlflow==2.8.1 \
     onnxruntime==1.18.0 \
     onnx \
     onnx-simplifier \
@@ -115,10 +115,10 @@ RUN pip install --no-cache-dir \
     basemap \
     rasterio \
     ttkthemes \
-    PyQt5 \
+    PyQt5==5.15.7 \
     h5py \
     tensorboard \
-    ray[rllib] \
+    ray[rllib]==2.6.7 \
     stable-baselines3[extra] \
     tensorflow-probability
 
