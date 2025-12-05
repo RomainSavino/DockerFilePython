@@ -113,6 +113,7 @@ RUN pip install --no-cache-dir \
     PyQt5 \
     h5py \
     tensorboard \
+    shimmy \
     ray[rllib] \
     stable-baselines3[extra] \
     tensorflow-probability
