@@ -1,4 +1,3 @@
-
 FROM nvidia/cuda:12.4.0-base-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -23,7 +22,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     pkg-config \
     libboost-program-options-dev \
     && rm -rf /var/lib/apt/lists/*
-    
+
 # replace SH with BASH 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
@@ -35,12 +34,14 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
     && locale-gen \
     && dpkg-reconfigure --frontend noninteractive locales
 RUN mkdir -p /run/sshd
+
 # Ajouter le dépôt Grafana et installer Grafana
 RUN wget -q -O - https://packages.grafana.com/gpg.key | apt-key add - \
     && echo "deb https://packages.grafana.com/oss/deb stable main" | tee /etc/apt/sources.list.d/grafana.list \
     && apt-get update \
     && apt-get install -y grafana \
     && rm -rf /var/lib/apt/lists/*
+
 # Installer Python 3.10 et ses dépendances
 RUN add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update \
@@ -53,10 +54,12 @@ RUN add-apt-repository ppa:deadsnakes/ppa \
         libssl-dev \
         libyaml-dev \
     && rm -rf /var/lib/apt/lists/*
+
 # Créer et activer l'environnement virtuel
 RUN mkdir -p /venv
 RUN python3.10 -m venv /venv
 RUN echo "PATH=/venv/bin:$PATH" > /etc/profile.d/python_venv.sh
+
 # Mettre à jour pip et installer les packages nécessaires
 RUN /venv/bin/pip install --upgrade pip setuptools wheel
 RUN /venv/bin/pip install "cython<3.0"
@@ -70,6 +73,7 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
         visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
         lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
         datasets torchtext torchaudio accelerate torchsummary mlflow
+
 RUN /venv/bin/pip install --no-cache-dir pre-commit \
     progressbar==2.5 \
     pyrootutils==1.0.4 \
@@ -93,11 +97,14 @@ RUN /venv/bin/pip install --no-cache-dir pre-commit \
     openvino-dev==2024.5.0 \
     skl2onnx \
     shap
-    
+
 # Installation de Grafana (si nécessaire, configuration supplémentaire peut être ajoutée ici)
+
 # Nettoyage final
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Optionnel : Ajouter des fichiers ou configurations supplémentaires si nécessaire
 # COPY your_files /workspace/
+
 # Point d'entrée par défaut
 CMD ["/bin/bash"]
