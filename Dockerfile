@@ -70,7 +70,7 @@ RUN /venv/bin/pip install --no-cache-dir Flask Folium haversine jupyterlab ipywi
         joblib kaleido lxml setuptools mako matplotlib opencv-python openpyxl pandas pillow psutil \
         pylint pyserial python-dateutil requests requests_html scikit-commpy scikit-learn scipy \
         seaborn sqlalchemy==1.4.1 tabulate tensorboard tifffile torch torchvision uncompyle6 \
-        visdom xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
+        xlrd xmltodict scikit-optimize optuna hyperopt bashplotlib albumentations timm \
         lightgbm ultralytics grad-cam optuna-distributed kaleido geopandas gunicorn transformers \
         datasets torchtext torchaudio accelerate torchsummary mlflow
 
