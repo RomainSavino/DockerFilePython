@@ -47,8 +47,15 @@ RUN wget -q -O - https://packages.grafana.com/gpg.key | apt-key add - \
 # 5. Création de l'environnement virtuel Python et mise à jour des outils de base
 RUN python3.10 -m venv /venv \
     && pip install --no-cache-dir --upgrade pip setuptools wheel "cython<3.0"
+    
+RUN pip install --no-cache-dir "datasets>=2.18.0"
 
 RUN pip install --no-cache-dir pyarrow==15.0.2
+
+RUN pip install --no-cache-dir \
+    numpy>=1.24 \
+    pyarrow==15.0.2 \
+    "datasets>=2.18.0"
     
 # 6. Installation des packages Python (nettoyés, sans doublons, compatibles CUDA 12)
 RUN pip install --no-cache-dir \
