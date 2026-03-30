@@ -48,6 +48,8 @@ RUN wget -q -O - https://packages.grafana.com/gpg.key | apt-key add - \
 RUN python3.10 -m venv /venv \
     && pip install --no-cache-dir --upgrade pip setuptools wheel "cython<3.0"
 
+RUN pip install --no-cache-dir --upgrade "numpy>=1.23,<3" "pyarrow>=12
+
 # 6. Installation des packages Python (nettoyés, sans doublons, compatibles CUDA 12)
 RUN pip install --no-cache-dir \
     # Frameworks Web & API
