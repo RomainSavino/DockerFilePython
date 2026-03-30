@@ -60,7 +60,7 @@ RUN pip install --no-cache-dir \
     # Computer Vision
     opencv-python pillow albumentations tifffile grad-cam \
     # Modèles, Optimisation & Déploiement
-    transformers datasets torchtext timm onnx onnxruntime==1.18.0 skl2onnx openvino-dev==2024.5.0 \
+    transformers datasets torchtext timm onnx==1.16.0 onnx-simplifier==0.4.36 onnxconverter-common==1.14.0 onnxruntime==1.18.0 onnxruntime-tools==1.7.0 skl2onnx openvino-dev==2024.5.0 \
     scikit-optimize optuna optuna-distributed hyperopt shap \
     # Base de données & MLOps
     mlflow sqlalchemy psycopg2-binary alembic \
