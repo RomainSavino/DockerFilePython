@@ -48,14 +48,14 @@ RUN wget -q -O - https://packages.grafana.com/gpg.key | apt-key add - \
 RUN python3.10 -m venv /venv \
     && pip install --no-cache-dir --upgrade pip setuptools wheel "cython<3.0"
 
-RUN pip install --no-cache-dir --upgrade "numpy>=1.23,<3" "pyarrow>=12
+RUN pip install --no-cache-dir --upgrade "numpy>=1.23,<3" "pyarrow>=12"
 
 # 6. Installation des packages Python (nettoyés, sans doublons, compatibles CUDA 12)
 RUN pip install --no-cache-dir \
     # Frameworks Web & API
     flask flask-restful flask-cors gunicorn dash dash-bootstrap-components dash_daq \
     # Manipulation de données et fichiers
-    pandas scipy numpy h5py openpyxl xlrd xmltodict dpkt \
+    pandas scipy h5py openpyxl xlrd xmltodict dpkt \
     # Deep Learning & Machine Learning
     tensorflow keras torch torchvision torchaudio accelerate torchsummary torchmetrics lightning \
     scikit-learn xgboost lightgbm ultralytics \
