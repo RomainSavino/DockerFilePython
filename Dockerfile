@@ -47,6 +47,8 @@ RUN apt-get update && apt-get install -y \
     libffi-dev \
     libssl-dev \
     libyaml-dev \
+    cmake \
+    ninja-build \
     && rm -rf /var/lib/apt/lists/*
 
 RUN python3.11 -m venv /venv
