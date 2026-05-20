@@ -139,7 +139,6 @@ RUN pip install --no-cache-dir \
     dash_daq \
     jupyter-dash \
     streamlit \
-    visdom \
     bashplotlib \
     psycopg2-binary \
     sqlalchemy \
