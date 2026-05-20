@@ -73,6 +73,12 @@ RUN /venv/bin/python3.11 -m ensurepip --upgrade \
     && /venv/bin/python3.11 -m pip install --upgrade pip setuptools wheel
 
 # ======================
+# Numpy (pinned avant tout)
+# ======================
+
+RUN pip install --no-cache-dir "numpy>=1.23.0,<2.0.0"
+
+# ======================
 # Scientific core
 # ======================
 
@@ -87,7 +93,6 @@ RUN pip install --no-cache-dir \
     MarkupSafe \
     mpmath \
     networkx \
-    numpy \
     pandas \
     pillow \
     pyparsing \
