@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/venv/bin:$PATH"
 ENV MPLBACKEND=Agg
 ENV QT_QPA_PLATFORM=offscreen
+ENV PIP_CONSTRAINT=/constraints.txt
 
 # ======================
 # System packages
@@ -74,12 +75,19 @@ RUN /venv/bin/python3.11 -m ensurepip --upgrade \
     && /venv/bin/python3.11 -m pip install --upgrade pip setuptools wheel
 
 # ======================
-# Numpy + PyArrow (pinned avant tout)
+# Contraintes globales pip
+# ======================
+
+RUN printf "numpy>=1.23.0,<2.0.0\npyarrow>=11.0.0\nscipy>=1.9.0\n" > /constraints.txt
+
+# ======================
+# Bootstrap (préinstallé avant tout)
 # ======================
 
 RUN pip install --no-cache-dir \
     "numpy>=1.23.0,<2.0.0" \
-    "pyarrow>=11.0.0"
+    "pyarrow>=11.0.0" \
+    "scipy>=1.9.0"
 
 # ======================
 # Scientific core
@@ -101,7 +109,6 @@ RUN pip install --no-cache-dir \
     pyparsing \
     python-dateutil \
     pytz \
-    scipy \
     six \
     sympy \
     typing_extensions \
@@ -145,7 +152,6 @@ RUN pip install --no-cache-dir \
     dash \
     dash-bootstrap-components \
     dash_daq \
-    jupyter-dash \
     streamlit \
     bashplotlib \
     psycopg2-binary \
@@ -163,18 +169,17 @@ RUN pip install --no-cache-dir \
     ipykernel \
     ipympl \
     jupyter \
+    debugpy \
     pre-commit \
     pytest \
     pylint \
     ruff \
     poethepoet \
-    progressbar==2.5 \
+    progressbar2 \
     pyrootutils==1.0.4 \
     rootutils==1.0.7 \
     sh==2.0.6 \
-    ptvsd \
     docopt \
-    argparse \
     mako \
     protobuf
 
@@ -202,9 +207,7 @@ RUN pip install --no-cache-dir \
     timm \
     albumentations \
     ultralytics \
-    grad-cam \
-    nncf \
-    neural-compressor
+    grad-cam
 
 # ======================
 # Reinforcement Learning
@@ -247,7 +250,9 @@ RUN pip install --no-cache-dir \
     onnx-simplifier \
     onnxconverter-common \
     onnxruntime-tools \
-    openvino-dev==2024.5.0
+    openvino-dev==2024.5.0 \
+    nncf \
+    neural-compressor
 
 # ======================
 # Misc packages
@@ -265,11 +270,11 @@ RUN pip install --no-cache-dir \
     ttkthemes \
     PyQt5 \
     opencv-python \
-    datetime \
-    py-cpuinfo
+    py-cpuinfo \
+    pytz
 
 # ======================
-# CUDA 12.x extras (machine 1 only at runtime)
+# CUDA 12.x extras (machine 1 uniquement au runtime)
 # ======================
 
 RUN pip install --no-cache-dir \
