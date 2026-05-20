@@ -35,6 +35,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     proj-data \
     proj-bin \
     libgeos-dev \
+    sqlitebrowser \
     && rm -rf /var/lib/apt/lists/*
 
 RUN add-apt-repository -y universe && apt-get update && rm -rf /var/lib/apt/lists/*
@@ -73,10 +74,12 @@ RUN /venv/bin/python3.11 -m ensurepip --upgrade \
     && /venv/bin/python3.11 -m pip install --upgrade pip setuptools wheel
 
 # ======================
-# Numpy (pinned avant tout)
+# Numpy + PyArrow (pinned avant tout)
 # ======================
 
-RUN pip install --no-cache-dir "numpy>=1.23.0,<2.0.0"
+RUN pip install --no-cache-dir \
+    "numpy>=1.23.0,<2.0.0" \
+    "pyarrow>=11.0.0"
 
 # ======================
 # Scientific core
