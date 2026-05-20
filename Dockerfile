@@ -4,8 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/venv/bin:$PATH"
 ENV MPLBACKEND=Agg
 ENV QT_QPA_PLATFORM=offscreen
-ENV PIP_CONSTRAINT=/constraints.txt
-
 # ======================
 # System packages
 # ======================
@@ -71,14 +69,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN python3.11 -m venv /venv
 
+RUN printf "numpy>=1.23.0,<2.0.0\npyarrow>=11.0.0\nscipy>=1.9.0\n" > /constraints.txt
+
+ENV PIP_CONSTRAINT=/constraints.txt
+
 RUN /venv/bin/python3.11 -m ensurepip --upgrade \
     && /venv/bin/python3.11 -m pip install --upgrade pip setuptools wheel
-
-# ======================
-# Contraintes globales pip
-# ======================
-
-RUN printf "numpy>=1.23.0,<2.0.0\npyarrow>=11.0.0\nscipy>=1.9.0\n" > /constraints.txt
 
 # ======================
 # Bootstrap (préinstallé avant tout)
