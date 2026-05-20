@@ -1,95 +1,279 @@
-# 1. Image de base
-FROM nvidia/cuda:12.4.0-base-ubuntu22.04
+FROM nvidia/cuda:12.2.0-base-ubuntu22.04
 
-# 2. Variables d'environnement pour l'OS
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=Europe/Paris \
-    LC_ALL=fr_FR.UTF-8 \
-    LC_CTYPE=fr_FR.UTF-8 \
-    # Ajout du venv au PATH pour utiliser directement "python" et "pip"
-    PATH="/venv/bin:$PATH"
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/venv/bin:$PATH"
+ENV MPLBACKEND=Agg
+ENV QT_QPA_PLATFORM=offscreen
 
-# 3. Installation des dépendances système, configuration timezone/locales
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# ======================
+# System packages
+# ======================
+
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     software-properties-common \
-    tzdata locales gcc make git curl wget \
-    openssh-server iproute2 tshark ffmpeg \
-    libsm6 libxext6 libopencv-dev pkg-config \
-    postgresql-client libboost-program-options-dev \
-    gnupg ca-certificates \
-    # Configuration Timezone
-    && ln -fs /usr/share/zoneinfo/$TZ /etc/localtime \
+    tzdata \
+    locales \
+    gcc \
+    make \
+    git \
+    openssh-server \
+    curl \
+    iproute2 \
+    tshark \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    postgresql-client \
+    libopencv-dev \
+    pkg-config \
+    libboost-program-options-dev \
+    cmake \
+    ninja-build \
+    libproj-dev \
+    proj-data \
+    proj-bin \
+    libgeos-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN add-apt-repository -y universe && apt-get update && rm -rf /var/lib/apt/lists/*
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
     && dpkg-reconfigure --frontend noninteractive tzdata \
-    # Configuration Locales
+    && export LC_ALL="fr_FR.UTF-8" \
+    && export LC_CTYPE="fr_FR.UTF-8" \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen \
-    && dpkg-reconfigure --frontend noninteractive locales \
-    # Préparation SSH
-    && mkdir -p /run/sshd \
-    # Remplacement de SH par BASH
-    && rm /bin/sh && ln -s /bin/bash /bin/sh \
-    # Nettoyage apt
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && dpkg-reconfigure --frontend noninteractive locales
 
-# 4. Installation de Grafana et Python 3.10
-RUN wget -q -O - https://packages.grafana.com/gpg.key | apt-key add - \
-    && echo "deb https://packages.grafana.com/oss/deb stable main" | tee /etc/apt/sources.list.d/grafana.list \
-    && add-apt-repository ppa:deadsnakes/ppa -y \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-    grafana \
-    python3.10 python3.10-venv python3.10-dev \
-    build-essential libffi-dev libssl-dev libyaml-dev \
-    # Nettoyage apt
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /run/sshd
 
-# 5. Création de l'environnement virtuel Python et mise à jour des outils de base
-RUN python3.10 -m venv /venv \
-    && pip install --no-cache-dir --upgrade pip setuptools wheel "cython<3.0"
-    
-RUN pip install --no-cache-dir "datasets>=2.18.0"
+# ======================
+# Python 3.11 + venv
+# ======================
 
-RUN pip install --no-cache-dir pyarrow==15.0.2
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    python3.11-venv \
+    python3.11-dev \
+    python3.11-tk \
+    build-essential \
+    libffi-dev \
+    libssl-dev \
+    libyaml-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python3.11 -m venv /venv
+
+RUN /venv/bin/python3.11 -m ensurepip --upgrade \
+    && /venv/bin/python3.11 -m pip install --upgrade pip setuptools wheel
+
+# ======================
+# Scientific core
+# ======================
 
 RUN pip install --no-cache-dir \
-    numpy>=1.24 \
-    pyarrow==15.0.2 \
-    "datasets>=2.18.0"
-    
-# 6. Installation des packages Python (nettoyés, sans doublons, compatibles CUDA 12)
+    cloudpickle \
+    cycler \
+    filelock \
+    fsspec \
+    importlib-metadata \
+    Jinja2 \
+    kiwisolver \
+    MarkupSafe \
+    mpmath \
+    networkx \
+    numpy \
+    pandas \
+    pillow \
+    pyparsing \
+    python-dateutil \
+    pytz \
+    scipy \
+    six \
+    sympy \
+    typing_extensions \
+    zipp \
+    pyyaml \
+    lxml \
+    tabulate \
+    xlrd \
+    openpyxl \
+    xmltodict \
+    tifffile \
+    scikit-image \
+    scikit-learn \
+    scikit-optimize \
+    scikit-commpy \
+    xgboost \
+    lightgbm \
+    seaborn \
+    matplotlib \
+    kaleido \
+    geopandas \
+    rasterio \
+    haversine \
+    gpxpy \
+    graphviz \
+    basemap
+
+# ======================
+# Web / API / Viz
+# ======================
+
 RUN pip install --no-cache-dir \
-    # Frameworks Web & API
-    flask flask-restful flask-cors gunicorn dash dash-bootstrap-components dash_daq \
-    # Manipulation de données et fichiers
-    pandas scipy h5py openpyxl xlrd xmltodict dpkt \
-    # Deep Learning & Machine Learning
-    tensorflow keras torch torchvision torchaudio accelerate torchsummary torchmetrics lightning \
-    scikit-learn xgboost lightgbm ultralytics cleanlab\
-    # Computer Vision
-    opencv-python pillow albumentations tifffile grad-cam \
-    # Modèles, Optimisation & Déploiement
-    transformers datasets torchtext timm onnx==1.16.0 onnxscript onnx-simplifier==0.4.36 onnxconverter-common==1.14.0 onnxruntime==1.18.0 onnxruntime-tools==1.7.0 skl2onnx openvino-dev==2024.5.0 \
-    scikit-optimize optuna optuna-distributed hyperopt shap \
-    # Base de données & MLOps
-    mlflow sqlalchemy psycopg2-binary alembic \
-    # Visualisation & Géospatial
-    matplotlib seaborn ipympl bashplotlib graphviz folium haversine gpsd-py3 gpxpy geopandas kaleido \
-    # Outils de développement, Jupyter & Divers
-    jupyterlab ipywidgets jupyter-dash ipython ipykernel ptvsd \
-    beautifulsoup4 requests requests_html lxml mako \
-    psutil pylint python-dateutil tabulate tensorboard uncompyle6 docopt glob2 \
-    joblib progressbar==2.5 pyrootutils==1.0.4 pytest rootutils==1.0.7 sh==2.0.6 \
-    hydra-core hydra-colorlog hydra-optuna-sweeper omegaconf \
-    # CuPy pour CUDA 12 (corrige l'erreur cupy-cuda110)
-    cupy-cuda12x
+    Flask \
+    flask-restful \
+    flask-cors \
+    gunicorn \
+    requests \
+    requests_html \
+    beautifulsoup4 \
+    Folium \
+    dash \
+    dash-bootstrap-components \
+    dash_daq \
+    jupyter-dash \
+    streamlit \
+    visdom \
+    bashplotlib \
+    psycopg2-binary \
+    sqlalchemy \
+    alembic
 
-# 7. Nettoyage final des fichiers temporaires
-RUN rm -rf /tmp/* /var/tmp/*
+# ======================
+# Jupyter / Dev tools
+# ======================
 
-# 8. Configuration de l'espace de travail
-WORKDIR /workspace
-# Optionnel : COPY your_files /workspace/
+RUN pip install --no-cache-dir \
+    jupyterlab \
+    ipywidgets \
+    ipython \
+    ipykernel \
+    ipympl \
+    jupyter \
+    pre-commit \
+    pytest \
+    pylint \
+    ruff \
+    poethepoet \
+    progressbar==2.5 \
+    pyrootutils==1.0.4 \
+    rootutils==1.0.7 \
+    sh==2.0.6 \
+    ptvsd \
+    docopt \
+    argparse \
+    mako \
+    protobuf
 
-# 9. Point d'entrée
+# ======================
+# ML / DL frameworks
+# ======================
+
+RUN pip install --no-cache-dir \
+    torch \
+    torchvision \
+    torchaudio \
+    torchtext \
+    torchmetrics \
+    torchsummary \
+    torch-summary \
+    torch-pruning \
+    thop \
+    lightning \
+    accelerate \
+    tensorflow \
+    keras \
+    tensorflow-probability \
+    transformers \
+    datasets \
+    timm \
+    albumentations \
+    ultralytics \
+    grad-cam \
+    nncf \
+    neural-compressor
+
+# ======================
+# Reinforcement Learning
+# ======================
+
+RUN pip install --no-cache-dir \
+    gym \
+    gymnasium \
+    Farama-Notifications \
+    pygame \
+    stable-baselines3 \
+    "stable-baselines3[extra]" \
+    "ray[rllib]"
+
+# ======================
+# Experiment tracking / HPO
+# ======================
+
+RUN pip install --no-cache-dir \
+    mlflow \
+    mlflow-export-import \
+    optuna \
+    "optuna-integration[mlflow]" \
+    optuna-distributed \
+    hyperopt \
+    hydra-core \
+    hydra-colorlog \
+    hydra-optuna-sweeper \
+    omegaconf \
+    tensorboard \
+    lakefs
+
+# ======================
+# ONNX / Optimization
+# ======================
+
+RUN pip install --no-cache-dir \
+    "onnxruntime>=1.20.0" \
+    onnx \
+    onnx-simplifier \
+    onnxconverter-common \
+    onnxruntime-tools \
+    openvino-dev==2024.5.0
+
+# ======================
+# Misc packages
+# ======================
+
+RUN pip install --no-cache-dir \
+    h5py \
+    joblib \
+    psutil \
+    pyserial \
+    dpkt \
+    glob2 \
+    gpsd-py3 \
+    ahrs \
+    ttkthemes \
+    PyQt5 \
+    opencv-python \
+    datetime \
+    py-cpuinfo
+
+# ======================
+# CUDA 12.x extras (machine 1 only at runtime)
+# ======================
+
+RUN pip install --no-cache-dir \
+    cupy-cuda12x==13.3.0 \
+    cudf-cu12==24.12.0
+
+# ======================
+# Cleanup
+# ======================
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+EXPOSE 8888
 CMD ["/bin/bash"]
