@@ -184,9 +184,11 @@ RUN pip install --no-cache-dir \
 # ======================
 
 RUN pip install --no-cache-dir \
+    --index-url https://download.pytorch.org/whl/cu121 \
     torch \
     torchvision \
     torchaudio \
+    && pip install --no-cache-dir \
     torchtext \
     torchmetrics \
     torchsummary \
