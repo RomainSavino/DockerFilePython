@@ -35,6 +35,15 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     proj-bin \
     libgeos-dev \
     sqlitebrowser \
+    libqt5xcbqpa5 \
+    libxcb-icccm4 \
+    libxcb-image0 \
+    libxcb-keysyms1 \
+    libxcb-randr0 \
+    libxcb-render-util0 \
+    libxcb-xinerama0 \
+    libxcb-xkb1 \
+    libxkbcommon-x11-0 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN add-apt-repository -y universe && apt-get update && rm -rf /var/lib/apt/lists/*
