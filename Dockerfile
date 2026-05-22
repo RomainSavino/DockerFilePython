@@ -69,7 +69,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN python3.11 -m venv /venv
 
-RUN printf "numpy>=1.23.0,<2.0.0\npyarrow>=11.0.0\nscipy>=1.9.0\n" > /constraints.txt
+RUN printf "numpy>=1.23.0,<2.0.0\npyarrow>=11.0.0\nscipy>=1.9.0\nsqlalchemy>=2.0.0\nalembic>=1.13.0\n" > /constraints.txt
 
 ENV PIP_CONSTRAINT=/constraints.txt
 
@@ -151,8 +151,8 @@ RUN pip install --no-cache-dir \
     streamlit \
     bashplotlib \
     psycopg2-binary \
-    sqlalchemy \
-    alembic
+    "sqlalchemy>=2.0.0" \
+    "alembic>=1.13.0"
 
 # ======================
 # Jupyter / Dev tools
