@@ -3,7 +3,6 @@ FROM nvidia/cuda:12.2.0-base-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/venv/bin:$PATH"
 ENV MPLBACKEND=Agg
-ENV QT_QPA_PLATFORM=offscreen
 # ======================
 # System packages
 # ======================
@@ -242,7 +241,6 @@ RUN pip install --no-cache-dir \
     hyperopt \
     hydra-core \
     hydra-colorlog \
-    hydra-optuna-sweeper \
     omegaconf \
     tensorboard \
     lakefs
