@@ -236,8 +236,8 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir \
     mlflow \
     mlflow-export-import \
-    "optuna==3.6.1" \
-    "optuna-integration[mlflow]==3.6.1" \
+    "optuna==4.8.0" \
+    "optuna-integration[mlflow]==4.8.0" \
     optuna-distributed \
     hyperopt \
     hydra-core \
