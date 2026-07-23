@@ -3,6 +3,7 @@ FROM nvidia/cuda:12.2.0-base-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/venv/bin:$PATH"
 ENV MPLBACKEND=Agg
+
 # ======================
 # System packages
 # ======================
@@ -193,7 +194,7 @@ RUN pip install --no-cache-dir \
 
 RUN pip install --no-cache-dir \
     --index-url https://download.pytorch.org/whl/cu121 \
-    torch \
+    torch==2.7.0 \
     torchvision \
     torchaudio \
     && pip install --no-cache-dir \
@@ -285,6 +286,18 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir \
     cupy-cuda12x==13.3.0 \
     cudf-cu12==24.12.0
+
+# ======================
+# SAM3
+# ======================
+
+RUN git clone https://github.com/facebookresearch/sam3.git /opt/sam3 \
+    && cd /opt/sam3 \
+    && pip install -e .
+
+ENV HF_HUB_OFFLINE=1
+ENV TRANSFORMERS_OFFLINE=1
+ENV SAM3_CHECKPOINT_DIR=/models/sam3
 
 # ======================
 # Cleanup
