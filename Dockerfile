@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.2.0-base-ubuntu22.04
+FROM nvidia/cuda:12.6.3-base-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/venv/bin:$PATH"
@@ -62,28 +62,30 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime \
 RUN mkdir -p /run/sshd
 
 # ======================
-# Python 3.11 + venv
+# Python 3.12 + venv
 # ======================
 
-RUN apt-get update && apt-get install -y \
-    python3.11 \
-    python3.11-venv \
-    python3.11-dev \
-    python3.11-tk \
+RUN add-apt-repository -y ppa:deadsnakes/ppa && apt-get update
+
+RUN apt-get install -y \
+    python3.12 \
+    python3.12-venv \
+    python3.12-dev \
+    python3.12-tk \
     build-essential \
     libffi-dev \
     libssl-dev \
     libyaml-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN python3.11 -m venv /venv
+RUN python3.12 -m venv /venv
 
 RUN printf "numpy>=1.23.0,<2.0.0\npyarrow>=11.0.0\nscipy>=1.9.0\nsqlalchemy>=2.0.0\nalembic>=1.13.0\n" > /constraints.txt
 
 ENV PIP_CONSTRAINT=/constraints.txt
 
-RUN /venv/bin/python3.11 -m ensurepip --upgrade \
-    && /venv/bin/python3.11 -m pip install --upgrade pip setuptools wheel
+RUN /venv/bin/python3.12 -m ensurepip --upgrade \
+    && /venv/bin/python3.12 -m pip install --upgrade pip setuptools wheel
 
 # ======================
 # Bootstrap (préinstallé avant tout)
@@ -193,7 +195,7 @@ RUN pip install --no-cache-dir \
 # ======================
 
 RUN pip install --no-cache-dir \
-    --index-url https://download.pytorch.org/whl/cu121 \
+    --index-url https://download.pytorch.org/whl/cu126 \
     torch==2.7.0 \
     torchvision \
     torchaudio \
